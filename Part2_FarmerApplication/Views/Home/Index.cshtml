@@ -1,0 +1,89 @@
+﻿@{
+    ViewData["Title"] = "Home Page";
+}
+<!-- Add Background with Overlay -->
+<style>
+    body {
+        margin: 0;
+        padding: 0;
+        font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        height: 100vh;
+        overflow: hidden;
+        position: relative;
+        color: #fff;
+    }
+
+    /* Background Image */
+    .background {
+        background: url("/Images/BackgroundProg7311.jpg") no-repeat center center fixed;
+        background-size: cover;
+        position: absolute;
+        top: 0;
+        left: 0;
+        height: 100%;
+        width: 100%;
+        z-index: -2;
+    }
+
+    /* Overlay */
+    .overlay {
+        background-color: rgba(11, 51, 6, 0.6); /* Adjust opacity here */
+        position: absolute;
+        top: 0;
+        left: 0;
+        height: 100%;
+        width: 100%;
+        z-index: -1;
+    }
+
+    .container {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        justify-content: center;
+        height: 100vh;
+        text-align: center;
+        padding: 1rem;
+    }
+
+    h1 {
+        font-size: 3rem;
+        margin-bottom: 1rem;
+        font-weight: bold;
+    }
+
+    h2 {
+        font-size: 1.5rem;
+        font-weight: 300;
+        margin-bottom: 2rem;
+    }
+
+    .pill-button {
+        background-color: #4CAF50;
+        color: white;
+        border: none;
+        border-radius: 50px;
+        padding: 0.75rem 2rem;
+        font-size: 1rem;
+        cursor: pointer;
+        transition: background-color 0.3s ease, transform 0.2s ease;
+        text-decoration: none;
+    }
+
+        .pill-button:hover {
+            background-color: #3e8e41;
+            transform: scale(1.05);
+            color: #9CED93;
+        }
+</style>
+
+<!-- Background and Overlay Layers -->
+<div class="background"></div>
+<div class="overlay"></div>
+
+<!-- Content -->
+<div class="container">
+    <h1>Agri-Connect</h1>
+    <h2>Harvesting the power of the Earth, fueling the future sustainably!</h2>
+    <a href="/Home/Login" class="pill-button">LOGIN</a>
+</div>
