@@ -1,4 +1,5 @@
-﻿@{
+﻿@model Part2_FarmerApplication.ViewModels.LoginViewModel
+@{
     ViewData["Title"] = "Login Page";
 }
 <style>
@@ -84,36 +85,24 @@
             color: #9CED93;
         }
 </style>
+<form method="post" asp-action="Login">
+    <div class="grid-container">
+        <h1>Good to see you again!</h1>
 
-<div class="grid-container">
-    <h1>Good to see you again!</h1>
+        <div class="form-wrapper">
+            <label class="label">
+                <input type="email" class="input" placeholder="Enter Email" autocomplete="off" asp-for="Email" />
+                <span class="icon">
+                    <svg class="w-6 h-6" xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="none" viewBox="0 0 24 24">
+                        <path stroke="currentColor" stroke-width="1.5" d="M7 17v1a1 1 0 0 0 1 1h8a1 1 0 0 0 1-1v-1a3 3 0 0 0-3-3h-4a3 3 0 0 0-3 3Zm8-9a3 3 0 1 1-6 0 3 3 0 0 1 6 0Z" />
+                    </svg>
+                </span>
+            </label>
 
-    <div class="form-wrapper">
-        <label class="label">
-            <input type="text"
-                   class="input"
-                   placeholder="Enter name"
-                   autocomplete="off" />
-            <span class="icon">
-                <svg class="w-6 h-6"
-                     xmlns="http://www.w3.org/2000/svg"
-                     width="24"
-                     height="24"
-                     fill="none"
-                     viewBox="0 0 24 24">
-                    <path stroke="currentColor"
-                          stroke-width="1.5"
-                          d="M7 17v1a1 1 0 0 0 1 1h8a1 1 0 0 0 1-1v-1a3 3 0 0 0-3-3h-4a3 3 0 0 0-3 3Zm8-9a3 3 0 1 1-6 0 3 3 0 0 1 6 0Z" />
-                </svg>
-            </span>
-        </label>
-
-        <label class="label">
-            <input type="password"
-                   class="input"
-                   placeholder="Password"
-                   autocomplete="off" />
-        </label>
+            <label class="label">
+                <input type="password" class="input" placeholder="Password" autocomplete="off" asp-for="Password" />
+            </label>
+        </div>
+        <button type="submit" class="pill-button">Login</button>
     </div>
-    <a href="/Dashboard/FarmerDashboard" class="pill-button">LOGIN</a>
-</div>
+</form>

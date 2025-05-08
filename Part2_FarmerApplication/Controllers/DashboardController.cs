@@ -8,5 +8,10 @@ namespace Part2_FarmerApplication.Controllers
         {
             return View();
         }
+
+        public IActionResult AdminDashboard()
+        {
+            return View();
+        }
     }
 }
