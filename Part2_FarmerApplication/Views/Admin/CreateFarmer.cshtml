@@ -1,0 +1,78 @@
+﻿@model Part2_FarmerApplication.Models.FarmerModel
+
+@{
+    ViewData["Title"] = "Create Farmer";
+}
+
+<h2>Create New Farmer</h2>
+
+<form asp-action="CreateFarmer" method="post" class="farmer-form">
+    <div class="form-group">
+        <label asp-for="FirstName"></label>
+        <input asp-for="FirstName" class="form-control" />
+        <span asp-validation-for="FirstName" class="text-danger"></span>
+    </div>
+
+    <div class="form-group">
+        <label asp-for="LastName"></label>
+        <input asp-for="LastName" class="form-control" />
+        <span asp-validation-for="LastName" class="text-danger"></span>
+    </div>
+
+    <div class="form-group">
+        <label asp-for="City"></label>
+        <input asp-for="City" class="form-control" />
+        <span asp-validation-for="City" class="text-danger"></span>
+    </div>
+
+    <div class="form-group">
+        <label asp-for="ContactNumber"></label>
+        <input asp-for="ContactNumber" type="number" class="form-control" />
+        <span asp-validation-for="ContactNumber" class="text-danger"></span>
+    </div>
+
+    <div class="form-group">
+        <label asp-for="Email"></label>
+        <input asp-for="Email" type="email" class="form-control" />
+        <span asp-validation-for="Email" class="text-danger"></span>
+    </div>
+
+    <div class="form-group">
+        <label asp-for="Password"></label>
+        <input asp-for="Password" type="password" class="form-control" />
+        <span asp-validation-for="Password" class="text-danger"></span>
+    </div>
+
+    <button type="submit" class="btn btn-success">Create Farmer</button>
+</form>
+
+<!-- Popup for Farmer Added -->
+<div id="farmerAddedPopup" class="popup">
+    <div class="popup-content">
+        <h3>Farmer Added Successfully!</h3>
+        <button onclick="closePopup()" class="btn btn-secondary">Close</button>
+    </div>
+</div>
+
+@section Scripts {
+    <partial name="_ValidationScriptsPartial" />
+
+    <script>
+        // Function to show the popup
+        function showPopup() {
+            document.getElementById('farmerAddedPopup').style.display = 'block';
+        }
+
+        // Function to close the popup
+        function closePopup() {
+            document.getElementById('farmerAddedPopup').style.display = 'none';
+        }
+
+        // Show popup after form submission
+        @if (TempData["FarmerAdded"] != null)
+        {
+            <text>showPopup();</text>
+        }
+    </script>
+}
+
