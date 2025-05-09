@@ -1,5 +1,6 @@
 ﻿@{
     ViewData["Title"] = "Dashboard";
+    Layout = "~/Views/Shared/_Layout.cshtml";
 }
 
 <style>
@@ -62,47 +63,8 @@
         padding: 2rem;
     }
 </style>
-<div class="layout">
-    <div class="sidebar">
-        <h2>Agri-Connect</h2>
-
-        <div class="menu-item">
-            <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                      d="M5.121 17.804A10.97 10.97 0 0112 15c2.21 0 4.255.64 5.879 1.804M15 10a3 3 0 11-6 0 3 3 0 016 0z" />
-            </svg>
-            <span>Welcome, User</span>
-        </div>
-
-        <div class="menu-item">
-            <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                      d="M4 6h16M4 12h16M4 18h16" />
-            </svg>
-            <span>Dashboard</span>
-        </div>
-
-        <div class="menu-item">
-            <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                      d="M16 7a4 4 0 00-8 0v1H5a2 2 0 00-2 2v6h18V10a2 2 0 00-2-2h-3V7z" />
-            </svg>
-            <span>Marketplace</span>
-        </div>
-
-        <a asp-controller="Admin" asp-action="CreateFarmer" style="text-decoration: none; color: inherit;">
-            <div class="menu-item">
-                <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                          d="M4 6h16M4 12h8m-8 6h16" />
-                </svg>
-                <span>Add a Farmer</span>
-            </div>
-        </a>
-    </div>
 
     <div class="content">
         <h1>Welcome to Agri-Connect</h1>
         <p>Admin</p>
     </div>
-</div> 

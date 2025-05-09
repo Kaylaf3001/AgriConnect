@@ -81,8 +81,5 @@ namespace Part2_FarmerApplication.Controllers
             // If we reach here, something went wrong; return to the login page with errors
             return View(model);
         }
-
-
-
     }
 }
