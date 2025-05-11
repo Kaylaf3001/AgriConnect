@@ -1,0 +1,32 @@
+﻿@model List<Part2_FarmerApplication.Models.ProductsModel>
+
+@{
+    ViewData["Title"] = "Marketplace";
+}
+
+<h2>Marketplace</h2>
+
+@if (Model.Count == 0)
+{
+    <p>No products available yet.</p>
+}
+else
+{
+    <div class="row">
+        @foreach (var product in Model)
+        {
+            <div class="col-md-4 mb-4">
+                <div class="card shadow-sm">
+                    <div class="card-body">
+                        <h5 class="card-title">@product.Name</h5>
+                        <p class="card-text">
+                            <strong>Category:</strong> @product.Category<br />
+                            <strong>Produced on:</strong> @product.ProductionDate.ToShortDateString()<br />
+                            <strong>Farmer:</strong> @product.Farmer?.FirstName @product.Farmer?.LastName<br />
+                        </p>
+                    </div>
+                </div>
+            </div>
+        }
+    </div>
+}

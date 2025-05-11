@@ -1,0 +1,39 @@
+﻿@model Part2_FarmerApplication.Models.ProductsModel
+
+@{
+    ViewData["Title"] = "Add Product";
+}
+
+<h2>Add Product</h2>
+
+@if (TempData["ProductAdded"] != null)
+{
+    <div class="alert alert-success">Product added successfully!</div>
+}
+
+<form asp-action="Create" method="post">
+    <div class="form-group">
+        <label asp-for="Name"></label>
+        <input asp-for="Name" class="form-control" />
+        <span asp-validation-for="Name" class="text-danger"></span>
+    </div>
+
+    <div class="form-group">
+        <label asp-for="Category"></label>
+        <input asp-for="Category" class="form-control" />
+        <span asp-validation-for="Category" class="text-danger"></span>
+    </div>
+
+    <div class="form-group">
+        <label asp-for="ProductionDate"></label>
+        <input asp-for="ProductionDate" class="form-control" type="date" />
+        <span asp-validation-for="ProductionDate" class="text-danger"></span>
+    </div>
+
+    <br />
+    <button type="submit" class="btn btn-success">Add Product</button>
+</form>
+
+@section Scripts {
+    <partial name="_ValidationScriptsPartial" />
+}

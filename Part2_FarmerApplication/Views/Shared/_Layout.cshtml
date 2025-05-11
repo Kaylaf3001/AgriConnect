@@ -1,9 +1,16 @@
-﻿@{
+﻿@using System.Security.Claims
+
+@{
     var currentController = ViewContext.RouteData.Values["controller"]?.ToString();
     var currentAction = ViewContext.RouteData.Values["action"]?.ToString();
     bool showSidebar = !(currentController == "Home" && currentAction == "Index") &&
                        !(currentController == "Login" && currentAction == "Login");
+
+    var userRole = User.FindFirstValue(ClaimTypes.Role); // Assumes you're storing roles in ClaimTypes.Role
+    var username = User.Identity?.Name;
 }
+
+
 
 <!DOCTYPE html>
 <html lang="en">
@@ -82,7 +89,7 @@
                         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
                               d="M5.121 17.804A10.97 10.97 0 0112 15c2.21 0 4.255.64 5.879 1.804M15 10a3 3 0 11-6 0 3 3 0 016 0z" />
                     </svg>
-                    <span>Welcome, User</span>
+                    <span>Welcome, @User.Identity?.Name</span>
                 </div>
 
                 <a asp-controller="Home" asp-action="Index" class="menu-item" style="text-decoration:none; color:white;">
@@ -101,13 +108,27 @@
                     <span>Marketplace</span>
                 </div>
 
-                <a asp-controller="Admin" asp-action="CreateFarmer" class="menu-item" style="text-decoration:none; color:white;">
-                    <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                              d="M4 6h16M4 12h8m-8 6h16" />
-                    </svg>
-                    <span>Add a Farmer</span>
-                </a>
+                @if (userRole == "Admin")
+                {
+                    <a asp-controller="Admin" asp-action="CreateFarmer" class="menu-item" style="text-decoration:none; color:white;">
+                        <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                  d="M4 6h16M4 12h8m-8 6h16" />
+                        </svg>
+                        <span>Add a Farmer</span>
+                    </a>
+                }
+                else if (userRole == "Farmer")
+                {
+                    <a asp-controller="Farmer" asp-action="AddProduct" class="menu-item" style="text-decoration:none; color:white;">
+                        <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                  d="M12 4v16m8-8H4" />
+                        </svg>
+                        <span>Add a Product</span>
+                    </a>
+                }
+
             </div>
 
             <div class="content">
