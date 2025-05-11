@@ -40,37 +40,42 @@ namespace Part2_FarmerApplication.Controllers
 
                 if (admin != null)
                 {
-                    // Debug to track admin login
-                    Console.WriteLine($"Admin {admin.Name} logged in successfully.");
-
                     // Create claims for the logged-in admin
                     var claims = new List<Claim>
                     {
-                        new Claim(ClaimTypes.NameIdentifier, admin.AdminID.ToString()), // Add AdminID as a claim
-                        new Claim(ClaimTypes.Name, admin.Name), // Add Admin name as a claim
-                        new Claim(ClaimTypes.Email, admin.Email), // Add Email as a claim
-                        new Claim(ClaimTypes.Role, admin.Role) // Add role as a claim
+                        new Claim(ClaimTypes.NameIdentifier, admin.AdminID.ToString()),
+                        new Claim(ClaimTypes.Name, admin.Name),
+                        new Claim(ClaimTypes.Email, admin.Email),
+                        new Claim(ClaimTypes.Role, admin.Role)
                     };
 
-                    // Create the claims identity
                     var claimsIdentity = new ClaimsIdentity(claims, CookieAuthenticationDefaults.AuthenticationScheme);
-
-                    // Create the claims principal
                     var claimsPrincipal = new ClaimsPrincipal(claimsIdentity);
 
-                    // Sign in the user (this sets the cookie for the session)
                     await HttpContext.SignInAsync(CookieAuthenticationDefaults.AuthenticationScheme, claimsPrincipal);
 
-                    // Redirect to the Admin Dashboard after login
                     return RedirectToAction("AdminDashboard", "Dashboard");
-                }
+                    }
 
                 // Check for Farmer login
                 var farmer = await _context.Farmers.FirstOrDefaultAsync(f => f.Email.ToLower() == model.Email.ToLower() && f.Password == model.Password);
 
                 if (farmer != null)
                 {
-                    // Farmer found, authenticate as farmer (similar approach can be done for Farmer if needed)
+                    // Create claims for the logged-in farmer
+                    var claims = new List<Claim>
+                    {
+                    new Claim(ClaimTypes.NameIdentifier, farmer.FarmerID.ToString()),
+                    new Claim(ClaimTypes.Name, $"{farmer.FirstName} {farmer.LastName}"),
+                    new Claim(ClaimTypes.Email, farmer.Email),
+                    new Claim(ClaimTypes.Role, farmer.Role)
+                    };
+
+                    var claimsIdentity = new ClaimsIdentity(claims, CookieAuthenticationDefaults.AuthenticationScheme);
+                    var claimsPrincipal = new ClaimsPrincipal(claimsIdentity);
+
+                    await HttpContext.SignInAsync(CookieAuthenticationDefaults.AuthenticationScheme, claimsPrincipal);
+
                     return RedirectToAction("FarmerDashboard", "Dashboard");
                 }
 
@@ -78,7 +83,6 @@ namespace Part2_FarmerApplication.Controllers
                 ModelState.AddModelError(string.Empty, "Invalid login attempt.");
             }
 
-            // If we reach here, something went wrong; return to the login page with errors
             return View(model);
         }
     }

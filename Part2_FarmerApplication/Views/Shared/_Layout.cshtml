@@ -100,13 +100,13 @@
                     <span>Dashboard</span>
                 </a>
 
-                <div class="menu-item">
+                <a asp-controller="Home" asp-action="Marketplace" class="menu-item" style="text-decoration:none; color:white;">
                     <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                              d="M16 7a4 4 0 00-8 0v1H5a2 2 0 00-2 2v6h18V10a2 2 0 00-2-2h-3V7z" />
+                              d="M3 7h18M3 12h18m-7 5h7" />
                     </svg>
                     <span>Marketplace</span>
-                </div>
+                </a>
 
                 @if (userRole == "Admin")
                 {

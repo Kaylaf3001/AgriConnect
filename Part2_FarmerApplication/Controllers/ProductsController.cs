@@ -24,7 +24,7 @@ namespace Part2_FarmerApplication.Controllers
         {
             _context.Products.Add(product);
             await _context.SaveChangesAsync();
-            return RedirectToAction("Index");
+            return RedirectToAction("Marketplace");
         }
 
         // Filter by category/date range
@@ -40,6 +40,12 @@ namespace Part2_FarmerApplication.Controllers
 
             var result = query.ToList();
             return View(result);
+        }
+
+        public IActionResult Marketplace()
+        {
+            var products = _context.Products.ToList();
+            return View(products);
         }
     }
 }
