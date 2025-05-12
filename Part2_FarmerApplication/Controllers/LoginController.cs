@@ -27,6 +27,7 @@ namespace Part2_FarmerApplication.Controllers
         [HttpPost]
         public async Task<IActionResult> Login(LoginViewModel model)
         {
+            // Validate that the model meets all teh required fields
             if (ModelState.IsValid)
             {
                 if (string.IsNullOrEmpty(model.Email) || string.IsNullOrEmpty(model.Password))
@@ -38,6 +39,7 @@ namespace Part2_FarmerApplication.Controllers
                 // Check for Admin login
                 var admin = await _context.Admins.FirstOrDefaultAsync(a => a.Email.ToLower() == model.Email.ToLower() && a.Password == model.Password);
 
+                // Check if the admin exists in the database therefore making a valid login
                 if (admin != null)
                 {
                     // Create claims for the logged-in admin
@@ -49,13 +51,15 @@ namespace Part2_FarmerApplication.Controllers
                         new Claim(ClaimTypes.Role, admin.Role)
                     };
 
+                    // Create a claims identity and principal
                     var claimsIdentity = new ClaimsIdentity(claims, CookieAuthenticationDefaults.AuthenticationScheme);
                     var claimsPrincipal = new ClaimsPrincipal(claimsIdentity);
 
+                    // Sign in the user with the claims principal
                     await HttpContext.SignInAsync(CookieAuthenticationDefaults.AuthenticationScheme, claimsPrincipal);
 
                     return RedirectToAction("AdminDashboard", "Dashboard");
-                    }
+                }
 
                 // Check for Farmer login
                 var farmer = await _context.Farmers.FirstOrDefaultAsync(f => f.Email.ToLower() == model.Email.ToLower() && f.Password == model.Password);
@@ -84,6 +88,14 @@ namespace Part2_FarmerApplication.Controllers
             }
 
             return View(model);
+        }
+
+        // Logout action to sign out the user
+        [HttpPost]
+        public async Task<IActionResult> Logout()
+        {
+            await HttpContext.SignOutAsync(CookieAuthenticationDefaults.AuthenticationScheme);
+            return RedirectToAction("Login", "Login");
         }
     }
 }

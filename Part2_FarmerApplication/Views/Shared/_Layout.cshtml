@@ -10,8 +10,6 @@
     var username = User.Identity?.Name;
 }
 
-
-
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -82,34 +80,18 @@
     {
         <div class="layout">
             <div class="sidebar">
-                <h2>Agri-Connect</h2>
+                <h2>Agri-Connect</h2>                      
 
-                <div class="menu-item">
+                @if (userRole == "Admin")
+                {
+                    <a asp-controller="Dashboard" asp-action="AdminDashboard" class="menu-item" style="text-decoration:none; color:white;">
                     <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
                               d="M5.121 17.804A10.97 10.97 0 0112 15c2.21 0 4.255.64 5.879 1.804M15 10a3 3 0 11-6 0 3 3 0 016 0z" />
                     </svg>
                     <span>Welcome, @User.Identity?.Name</span>
-                </div>
+                    </a>
 
-                <a asp-controller="Home" asp-action="Index" class="menu-item" style="text-decoration:none; color:white;">
-                    <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                              d="M4 6h16M4 12h16M4 18h16" />
-                    </svg>
-                    <span>Dashboard</span>
-                </a>
-
-                <a asp-controller="Home" asp-action="FarmersProducts" class="menu-item" style="text-decoration:none; color:white;">
-                    <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                              d="M3 7h18M3 12h18m-7 5h7" />
-                    </svg>
-                    <span>Marketplace</span>
-                </a>
-
-                @if (userRole == "Admin")
-                {
                     <a asp-controller="Admin" asp-action="CreateFarmer" class="menu-item" style="text-decoration:none; color:white;">
                         <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
@@ -117,9 +99,24 @@
                         </svg>
                         <span>Add a Farmer</span>
                     </a>
+
+                    <a asp-controller="Admin" asp-action="FilterFarmer" class="menu-item" style="text-decoration:none; color:white;">
+                        <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 4a6 6 0 100 12 6 6 0 000-12zm0 0l6 6" />
+                        </svg>
+                        <span>Search</span>
+                    </a>
                 }
                 else if (userRole == "Farmer")
                 {
+                    <a asp-controller="Dashboard" asp-action="FarmerDashboard" class="menu-item" style="text-decoration:none; color:white;">
+                    <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                              d="M5.121 17.804A10.97 10.97 0 0112 15c2.21 0 4.255.64 5.879 1.804M15 10a3 3 0 11-6 0 3 3 0 016 0z" />
+                    </svg>
+                    <span>Welcome, @User.Identity?.Name</span>
+                    </a>
+
                     <a asp-controller="Products" asp-action="AddProduct" class="menu-item" style="text-decoration:none; color:white;">
                         <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
@@ -128,6 +125,21 @@
                         <span>Add a Product</span>
                     </a>
                 }
+                <a asp-controller="Home" asp-action="FarmersProducts" class="menu-item" style="text-decoration:none; color:white;">
+                    <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                              d="M3 7h18M3 12h18m-7 5h7" />
+                    </svg>
+                    <span>Farmers Products</span>
+                </a>
+
+                <a asp-controller="Login" asp-action="Login" class="menu-item" style="text-decoration:none; color:white;">
+                    <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                              d="M5.121 17.804A10.97 10.97 0 0112 15c2.21 0 4.255.64 5.879 1.804M15 10a3 3 0 11-6 0 3 3 0 016 0z" />
+                    </svg>
+                    <span>Logout</span>
+                </a>
 
             </div>
 
