@@ -124,6 +124,9 @@ namespace Part2_FarmerApplication.Migrations
                     b.Property<int>("FarmerID")
                         .HasColumnType("INTEGER");
 
+                    b.Property<string>("ImagePath")
+                        .HasColumnType("TEXT");
+
                     b.Property<string>("Name")
                         .IsRequired()
                         .HasColumnType("TEXT");

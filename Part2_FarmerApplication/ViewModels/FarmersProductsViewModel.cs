@@ -8,5 +8,6 @@
         public DateTime ProductionDate { get; set; }
         public string FarmerFirstName { get; set; } = string.Empty;
         public string FarmerLastName { get; set; } = string.Empty;
+        public string ImagePath { get; set; } = string.Empty;
     }
 }

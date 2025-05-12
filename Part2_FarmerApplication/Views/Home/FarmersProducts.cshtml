@@ -1,5 +1,14 @@
 ﻿@model List<Part2_FarmerApplication.ViewModels.FarmersProductsViewModel>
 
+<style>
+    .farmer-image {
+        width: 150px;
+        height: 150px;
+        object-fit: cover;
+        border-radius: 8px;
+    }
+</style>
+
 @{
     ViewData["Title"] = "Farmers Products";
 }
@@ -15,10 +24,12 @@ else
     <table class="table">
         <thead>
             <tr>
+                
                 <th>Product Name</th>
                 <th>Category</th>
                 <th>Production Date</th>
                 <th>Farmer Name</th>
+                <th>Image</th>
             </tr>
         </thead>
         <tbody>
@@ -29,6 +40,7 @@ else
                     <td>@product.Category</td>
                     <td>@product.ProductionDate.ToShortDateString()</td>
                     <td>@product.FarmerFirstName @product.FarmerLastName</td>
+                    <td><img src="@(!string.IsNullOrEmpty(product.ImagePath) ? product.ImagePath : "/FarmersProductsImages/placeholder.jpg")" alt="@product.ProductName" class="farmer-image" /></td>
                 </tr>
             }
         </tbody>

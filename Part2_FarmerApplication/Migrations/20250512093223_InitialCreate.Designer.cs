@@ -11,7 +11,7 @@ using Part2_FarmerApplication.Services;
 namespace Part2_FarmerApplication.Migrations
 {
     [DbContext(typeof(AppDbContext))]
-    [Migration("20250511182812_InitialCreate")]
+    [Migration("20250512093223_InitialCreate")]
     partial class InitialCreate
     {
         /// <inheritdoc />
@@ -126,6 +126,9 @@ namespace Part2_FarmerApplication.Migrations
 
                     b.Property<int>("FarmerID")
                         .HasColumnType("INTEGER");
+
+                    b.Property<string>("ImagePath")
+                        .HasColumnType("TEXT");
 
                     b.Property<string>("Name")
                         .IsRequired()

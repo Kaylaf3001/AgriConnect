@@ -11,7 +11,7 @@
     <div class="alert alert-success">Product added successfully!</div>
 }
 
-<form asp-controller="Products" asp-action="AddProduct" method="post">
+<form asp-controller="Products" asp-action="AddProduct" method="post" enctype="multipart/form-data">
     <div class="form-group">
         <label asp-for="Name"></label>
         <input asp-for="Name" class="form-control" />
@@ -20,7 +20,13 @@
 
     <div class="form-group">
         <label asp-for="Category"></label>
-        <input asp-for="Category" class="form-control" />
+        <select asp-for="Category" class="form-control">
+            <option value="">-- Select a Category --</option>
+            @foreach (var category in ViewBag.Categories as List<string>)
+            {
+                <option value="@category">@category</option>
+            }
+        </select>
         <span asp-validation-for="Category" class="text-danger"></span>
     </div>
 
@@ -30,7 +36,11 @@
         <span asp-validation-for="ProductionDate" class="text-danger"></span>
     </div>
 
-    <br />
+    <div class="form-group">
+        <label for="Image">Product Image</label>
+        <input type="file" class="form-control" id="Image" name="Image" accept="image/*" />
+    </div>
+
     <button type="submit" class="btn btn-success">Add Product</button>
 </form>
 

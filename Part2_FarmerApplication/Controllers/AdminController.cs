@@ -8,32 +8,47 @@ namespace Part2_FarmerApplication.Controllers
 {
     public class AdminController : Controller
     {
+        //AppDbContext is a class that represents the database context for the application.
         private readonly AppDbContext _context;
 
+        //----------------------------------------------------------------------------------------------------------------------
+        // Constructor to initialize the AppDbContext
+        //----------------------------------------------------------------------------------------------------------------------
         public AdminController(AppDbContext context)
         {
             _context = context;
         }
+        //----------------------------------------------------------------------------------------------------------------------
 
+        //----------------------------------------------------------------------------------------------------------------------
+        // Admin Dashboard
+        //----------------------------------------------------------------------------------------------------------------------
         public IActionResult Dashboard()
         {
             return View();
         }
+        //----------------------------------------------------------------------------------------------------------------------
 
-        // GET: Create Farmer form
+        //----------------------------------------------------------------------------------------------------------------------
+        // Create Farmer form
+        //----------------------------------------------------------------------------------------------------------------------
         [HttpGet]
         public IActionResult CreateFarmer()
         {
             return View();
         }
+        //----------------------------------------------------------------------------------------------------------------------
 
-        // POST: Create Farmer
+        //----------------------------------------------------------------------------------------------------------------------
+        // Here an admin can create a new farmer
+        //----------------------------------------------------------------------------------------------------------------------
         [HttpPost]
         public async Task<IActionResult> CreateFarmer(FarmerModel farmer)
         {
+            //Check if the model state is valid
             if (ModelState.IsValid)
             {
-                // Optional: Check if email already exists
+                //Check if email already exists
                 var existingFarmer = _context.Farmers.FirstOrDefault(f => f.Email == farmer.Email);
                 if (existingFarmer != null)
                 {
@@ -63,7 +78,7 @@ namespace Part2_FarmerApplication.Controllers
                 _context.Farmers.Add(farmer);
                 await _context.SaveChangesAsync(); // Save changes to SQLite
 
-                // Optionally, you can check if the save was successful by querying the database
+                // Check if the save was successful by querying the database
                 var newlyAddedFarmer = await _context.Farmers.FirstOrDefaultAsync(f => f.Email == farmer.Email);
                 if (newlyAddedFarmer != null)
                 {
@@ -77,5 +92,36 @@ namespace Part2_FarmerApplication.Controllers
 
             return View(farmer);
         }
+        //----------------------------------------------------------------------------------------------------------------------
+
+        //----------------------------------------------------------------------------------------------------------------------
+        // Filter by category/date range
+        //----------------------------------------------------------------------------------------------------------------------
+        public IActionResult FilterFarmers(string category, DateTime? startDate, DateTime? endDate)
+        {
+            var query = _context.Products.Include(p => p.Farmer).AsQueryable();
+
+            if (!string.IsNullOrEmpty(category))
+                query = query.Where(p => p.Category == category);
+       
+            if (startDate.HasValue && endDate.HasValue)
+                query = query.Where(p => p.ProductionDate >= startDate && p.ProductionDate <= endDate);
+
+            // If the user is a farmer, filter products by their FarmerID
+            var result = query
+                .Select(p => new Part2_FarmerApplication.ViewModels.FarmersProductsViewModel
+                {
+                    ProductName = p.Name,
+                    Category = p.Category,
+                    ProductionDate = p.ProductionDate,
+                    FarmerFirstName = p.Farmer.FirstName,
+                    FarmerLastName = p.Farmer.LastName
+                })
+                .ToList();
+
+            return View(result);
+        }
+        //----------------------------------------------------------------------------------------------------------------------
     }
 }
+//------------------------------------------------End-of-File-------------------------------------------------------------------

@@ -11,8 +11,6 @@ namespace Part2_FarmerApplication.Services
         public DbSet<FarmerModel> Farmers { get; set; }
         public DbSet<ProductsModel> Products { get; set; }
 
-        
-
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
             base.OnModelCreating(modelBuilder);

@@ -53,14 +53,16 @@ namespace Part2_FarmerApplication.Controllers
                 Category = p.Category,
                 ProductionDate = p.ProductionDate,
                 FarmerFirstName = p.Farmer != null ? p.Farmer.FirstName : "Unknown",
-                FarmerLastName = p.Farmer != null ? p.Farmer.LastName : "Unknown"
+                FarmerLastName = p.Farmer != null ? p.Farmer.LastName : "Unknown",
+                ImagePath = !string.IsNullOrEmpty(p.ImagePath) ? p.ImagePath : "/FarmersProductsImages/placeholder.jpg" // Default image
             }).ToList();
 
             return View(products);
         }
 
-        //
         [ResponseCache(Duration = 0, Location = ResponseCacheLocation.None, NoStore = true)]
+
+        // This action method handles errors and returns an error view with the request ID
         public IActionResult Error()
         {
             return View(new ErrorViewModel { RequestId = Activity.Current?.Id ?? HttpContext.TraceIdentifier });

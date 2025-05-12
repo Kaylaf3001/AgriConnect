@@ -2,27 +2,41 @@
 using Microsoft.EntityFrameworkCore;
 using Part2_FarmerApplication.Models;
 using Part2_FarmerApplication.Services;
-
+using Microsoft.AspNetCore.Hosting;
+using Microsoft.AspNetCore.Http;
+using System.IO;
 
 namespace Part2_FarmerApplication.Controllers
 {
     public class ProductsController : Controller
     {
-
         private readonly AppDbContext _context;
+        private readonly IWebHostEnvironment _webHostEnvironment;
 
-        public ProductsController(AppDbContext context)
+        public ProductsController(AppDbContext context, IWebHostEnvironment webHostEnvironment)
         {
             _context = context;
+            _webHostEnvironment = webHostEnvironment;
         }
 
         public IActionResult AddProduct()
+    {
+        // Predefined list of categories
+        ViewBag.Categories = new List<string>
         {
-            return View();
-        }
+            "Fruits",
+            "Vegetables",
+            "Dairy",
+            "Grains",
+            "Meat",
+            "Poultry"
+        };
+
+        return View();
+    }
 
         [HttpPost]
-        public async Task<IActionResult> AddProduct(ProductsModel product)
+        public async Task<IActionResult> AddProduct(ProductsModel product, IFormFile? Image)
         {
             if (ModelState.IsValid)
             {
@@ -42,6 +56,26 @@ namespace Part2_FarmerApplication.Controllers
                 {
                     ModelState.AddModelError("", "Farmer not found.");
                     return RedirectToAction("AddProduct", "Products");
+                }
+
+                // Handle image upload
+                if (Image != null && Image.Length > 0)
+                {
+                    var uploadsFolder = Path.Combine(_webHostEnvironment.WebRootPath, "FarmersProductsImages");
+                    if (!Directory.Exists(uploadsFolder))
+                    {
+                        Directory.CreateDirectory(uploadsFolder); // Ensure the directory exists
+                    }
+
+                    var uniqueFileName = Guid.NewGuid().ToString() + "_" + Image.FileName;
+                    var filePath = Path.Combine(uploadsFolder, uniqueFileName);
+
+                    using (var fileStream = new FileStream(filePath, FileMode.Create))
+                    {
+                        await Image.CopyToAsync(fileStream);
+                    }
+
+                    product.ImagePath = "/FarmersProductsImages/" + uniqueFileName;
                 }
 
                 // Assign the FarmerID and Farmer navigation property to the product
@@ -67,22 +101,5 @@ namespace Part2_FarmerApplication.Controllers
 
             return RedirectToAction("AddProduct", "Products");
         }
-
-        // Filter by category/date range
-        public IActionResult Filter(string category, DateTime? startDate, DateTime? endDate)
-        {
-            var query = _context.Products.AsQueryable();
-
-            if (!string.IsNullOrEmpty(category))
-                query = query.Where(p => p.Category == category);
-
-            if (startDate.HasValue && endDate.HasValue)
-                query = query.Where(p => p.ProductionDate >= startDate && p.ProductionDate <= endDate);
-
-            var result = query.ToList();
-            return View(result);
-        }
-
-        
     }
 }

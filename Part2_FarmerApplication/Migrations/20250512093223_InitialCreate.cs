@@ -62,7 +62,8 @@ namespace Part2_FarmerApplication.Migrations
                     Name = table.Column<string>(type: "TEXT", nullable: false),
                     Category = table.Column<string>(type: "TEXT", nullable: false),
                     ProductionDate = table.Column<DateTime>(type: "TEXT", nullable: false),
-                    FarmerID = table.Column<int>(type: "INTEGER", nullable: false)
+                    FarmerID = table.Column<int>(type: "INTEGER", nullable: false),
+                    ImagePath = table.Column<string>(type: "TEXT", nullable: true)
                 },
                 constraints: table =>
                 {
