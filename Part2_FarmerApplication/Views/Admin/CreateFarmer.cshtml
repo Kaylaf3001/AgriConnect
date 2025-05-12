@@ -2,13 +2,74 @@
 
 @{
     ViewData["Title"] = "Create Farmer";
-    Layout = "~/Views/Shared/_Layout.cshtml";
-
 }
 
-<h2>Create New Farmer</h2>
+<style>
+    .farmer-form {
+        width: 600px;
+        margin: 0px 0 0px 0px; /* top, right, bottom, left */
+        padding: 30px;
+        border-radius: 12px;
+    }
+
+        .farmer-form h2 {
+            font-size: 2rem;
+            font-weight: bold;
+            color: #2c3e50;
+            margin-bottom: 25px;
+        }
+
+    .form-group label {
+        font-weight: 600;
+        color: #34495e;
+    }
+
+    .form-control {
+        border-radius: 8px;
+        padding: 10px;
+        font-size: 1rem;
+    }
+
+    .btn-success {
+        width: 100%;
+        padding: 12px;
+        font-weight: bold;
+        font-size: 1.1rem;
+        border-radius: 10px;
+        background: linear-gradient(135deg, #6bbf59, #a8eb12);
+        border: none;
+    }
+
+        .btn-success:hover {
+            background: linear-gradient(135deg, #5da74c, #95d010);
+        }
+
+    .text-danger {
+        font-size: 0.9rem;
+        margin-top: 5px;
+        display: block;
+    }
+
+    .popup {
+        display: none;
+        position: fixed;
+        top: 30%;
+        left: 40%;
+        background-color: #ffffff;
+        padding: 20px;
+        border-radius: 10px;
+        box-shadow: 0 0 15px rgba(0, 0, 0, 0.2);
+        z-index: 1000;
+    }
+
+    .popup-content h3 {
+        margin-bottom: 15px;
+    }
+</style>
 
 <form asp-action="CreateFarmer" method="post" class="farmer-form">
+    <h2>🌿 Create New Farmer</h2>
+
     <div class="form-group">
         <label asp-for="FirstName"></label>
         <input asp-for="FirstName" class="form-control" />
@@ -73,7 +134,7 @@
         // Show popup after form submission
         @if (TempData["FarmerAdded"] != null)
         {
-            <text>showPopup();</text>
+                <text>showPopup();</text>
         }
     </script>
 }
