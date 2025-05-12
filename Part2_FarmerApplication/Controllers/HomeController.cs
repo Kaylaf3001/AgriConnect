@@ -4,6 +4,7 @@ using Part2_FarmerApplication.Models;
 using Part2_FarmerApplication.Services;
 using Part2_FarmerApplication.ViewModels;
 using System.Diagnostics;
+using System.Security.Claims;
 
 namespace Part2_FarmerApplication.Controllers
 {
@@ -28,25 +29,37 @@ namespace Part2_FarmerApplication.Controllers
             return View();
         }
 
+        /// This action method retrieves all products along with their associated farmers
         [HttpGet]
         public IActionResult FarmersProducts()
         {
-            var products = _context.Products
-                .Include(p => p.Farmer) // Eagerly load the Farmer navigation property
-                .Select(p => new FarmersProductsViewModel
-                {
-                    ProductID = p.ProductID,
-                    ProductName = p.Name,
-                    Category = p.Category,
-                    ProductionDate = p.ProductionDate,
-                    FarmerFirstName = p.Farmer != null ? p.Farmer.FirstName : "Unknown",
-                    FarmerLastName = p.Farmer != null ? p.Farmer.LastName : "Unknown"
-                })
-                .ToList();
+            // Retrieve the logged-in user's role
+            var userRole = User.FindFirstValue(ClaimTypes.Role);
+            var userId = User.FindFirstValue(ClaimTypes.NameIdentifier);
+
+            IQueryable<ProductsModel> query = _context.Products.Include(p => p.Farmer);
+
+            if (userRole == "Farmer" && int.TryParse(userId, out int farmerId))
+            {
+                // If the user is a farmer, filter products by their FarmerID
+                query = query.Where(p => p.FarmerID == farmerId);
+            }
+
+            // Map the filtered products to the view model
+            var products = query.Select(p => new FarmersProductsViewModel
+            {
+                ProductID = p.ProductID,
+                ProductName = p.Name,
+                Category = p.Category,
+                ProductionDate = p.ProductionDate,
+                FarmerFirstName = p.Farmer != null ? p.Farmer.FirstName : "Unknown",
+                FarmerLastName = p.Farmer != null ? p.Farmer.LastName : "Unknown"
+            }).ToList();
 
             return View(products);
         }
 
+        //
         [ResponseCache(Duration = 0, Location = ResponseCacheLocation.None, NoStore = true)]
         public IActionResult Error()
         {
