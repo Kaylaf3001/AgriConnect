@@ -6,12 +6,12 @@
 
 <h2>Add Product</h2>
 
-@if (TempData["ProductAdded"] != null)
+@if (TempData["AddProduct"] != null)
 {
     <div class="alert alert-success">Product added successfully!</div>
 }
 
-<form asp-action="Create" method="post">
+<form asp-controller="Products" asp-action="AddProduct" method="post">
     <div class="form-group">
         <label asp-for="Name"></label>
         <input asp-for="Name" class="form-control" />

@@ -19,6 +19,7 @@ namespace Part2_FarmerApplication.Migrations
                         .Annotation("Sqlite:Autoincrement", true),
                     Name = table.Column<string>(type: "TEXT", nullable: false),
                     Email = table.Column<string>(type: "TEXT", nullable: false),
+                    Password = table.Column<string>(type: "TEXT", nullable: false),
                     Role = table.Column<string>(type: "TEXT", nullable: false)
                 },
                 constraints: table =>
@@ -73,6 +74,16 @@ namespace Part2_FarmerApplication.Migrations
                         principalColumn: "FarmerID",
                         onDelete: ReferentialAction.Cascade);
                 });
+
+            migrationBuilder.InsertData(
+                table: "Admins",
+                columns: new[] { "AdminID", "Email", "Name", "Password", "Role" },
+                values: new object[] { 1, "admin@example.com", "Admin User", "admin123", "Admin" });
+
+            migrationBuilder.InsertData(
+                table: "Farmers",
+                columns: new[] { "FarmerID", "AdminID", "City", "ContactNumber", "Email", "FirstName", "LastName", "Password", "Role" },
+                values: new object[] { 1, 1, "GreenVille", 1234567890, "farmer@example.com", "John", "Doe", "farmer123", "Farmer" });
 
             migrationBuilder.CreateIndex(
                 name: "IX_Farmers_AdminID",

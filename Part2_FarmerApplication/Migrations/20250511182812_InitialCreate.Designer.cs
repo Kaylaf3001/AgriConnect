@@ -11,8 +11,8 @@ using Part2_FarmerApplication.Services;
 namespace Part2_FarmerApplication.Migrations
 {
     [DbContext(typeof(AppDbContext))]
-    [Migration("20250506180950_SeedUsersFixed")]
-    partial class SeedUsersFixed
+    [Migration("20250511182812_InitialCreate")]
+    partial class InitialCreate
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)

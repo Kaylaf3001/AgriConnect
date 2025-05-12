@@ -100,7 +100,7 @@
                     <span>Dashboard</span>
                 </a>
 
-                <a asp-controller="Home" asp-action="Marketplace" class="menu-item" style="text-decoration:none; color:white;">
+                <a asp-controller="Home" asp-action="FarmersProducts" class="menu-item" style="text-decoration:none; color:white;">
                     <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
                               d="M3 7h18M3 12h18m-7 5h7" />
@@ -120,7 +120,7 @@
                 }
                 else if (userRole == "Farmer")
                 {
-                    <a asp-controller="Farmer" asp-action="AddProduct" class="menu-item" style="text-decoration:none; color:white;">
+                    <a asp-controller="Products" asp-action="AddProduct" class="menu-item" style="text-decoration:none; color:white;">
                         <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
                                   d="M12 4v16m8-8H4" />

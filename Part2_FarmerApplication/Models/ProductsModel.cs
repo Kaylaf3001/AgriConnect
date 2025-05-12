@@ -18,7 +18,8 @@ namespace Part2_FarmerApplication.Models
         public int FarmerID { get; set; }
 
         // Navigation Property
-        public required FarmerModel Farmer { get; set; } // Required navigation property
+        
+        public FarmerModel? Farmer { get; set; }
 
         // Parameterless constructor (required for EF Core)
         public ProductsModel() { }

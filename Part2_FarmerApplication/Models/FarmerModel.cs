@@ -8,7 +8,6 @@ namespace Part2_FarmerApplication.Models
         // Primary Key
         [Key]
         public int FarmerID { get; set; }
-
         // Required properties
         public required string FirstName { get; set; }
         public required string LastName { get; set; }
