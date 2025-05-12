@@ -117,6 +117,14 @@
                     <span>Welcome, @User.Identity?.Name</span>
                     </a>
 
+                    <a asp-controller="Farmer" asp-action="FarmersProducts" class="menu-item" style="text-decoration:none; color:white;">
+                    <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                              d="M3 7h18M3 12h18m-7 5h7" />
+                    </svg>
+                    <span>Products</span>
+                    </a>
+
                     <a asp-controller="Products" asp-action="AddProduct" class="menu-item" style="text-decoration:none; color:white;">
                         <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
@@ -125,13 +133,6 @@
                         <span>Add a Product</span>
                     </a>
                 }
-                <a asp-controller="Home" asp-action="FarmersProducts" class="menu-item" style="text-decoration:none; color:white;">
-                    <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                              d="M3 7h18M3 12h18m-7 5h7" />
-                    </svg>
-                    <span>Farmers Products</span>
-                </a>
 
                 <a asp-controller="Login" asp-action="Login" class="menu-item" style="text-decoration:none; color:white;">
                     <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">

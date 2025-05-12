@@ -97,17 +97,29 @@ namespace Part2_FarmerApplication.Controllers
         //----------------------------------------------------------------------------------------------------------------------
         // Filter by category/date range
         //----------------------------------------------------------------------------------------------------------------------
-        public IActionResult FilterFarmers(string category, DateTime? startDate, DateTime? endDate)
+        public IActionResult FilterFarmers(string category, string farmerName, DateTime? startDate, DateTime? endDate)
         {
+            // Retrieve the list of unique categories for the dropdown
+            ViewBag.Categories = _context.Products
+                .Select(p => p.Category)
+                .Distinct()
+                .ToList();
+
             var query = _context.Products.Include(p => p.Farmer).AsQueryable();
 
+            // Filter by category
             if (!string.IsNullOrEmpty(category))
                 query = query.Where(p => p.Category == category);
-       
+
+            // Filter by farmer's name
+            if (!string.IsNullOrEmpty(farmerName))
+                query = query.Where(p => (p.Farmer.FirstName + " " + p.Farmer.LastName).Contains(farmerName));
+
+            // Filter by date range
             if (startDate.HasValue && endDate.HasValue)
                 query = query.Where(p => p.ProductionDate >= startDate && p.ProductionDate <= endDate);
 
-            // If the user is a farmer, filter products by their FarmerID
+            // Map the filtered products to the view model
             var result = query
                 .Select(p => new Part2_FarmerApplication.ViewModels.FarmersProductsViewModel
                 {

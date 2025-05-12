@@ -71,15 +71,25 @@
 <!-- Filter Form -->
 <form asp-controller="Admin" asp-action="FilterFarmers" method="get" class="mb-4">
     <div class="row">
-        <div class="col-md-4">
+        <div class="col-md-3">
             <label for="category" class="form-label">Category</label>
-            <input type="text" name="category" id="category" class="form-control" placeholder="Enter category" />
+            <select name="category" id="category" class="form-control">
+                <option value="">-- Select a Category --</option>
+                @foreach (var category in ViewBag.Categories as List<string>)
+                {
+                    <option value="@category">@category</option>
+                }
+            </select>
         </div>
         <div class="col-md-3">
+            <label for="farmerName" class="form-label">Farmer Name</label>
+            <input type="text" name="farmerName" id="farmerName" class="form-control" placeholder="Enter farmer's name" />
+        </div>
+        <div class="col-md-2">
             <label for="startDate" class="form-label">Start Date</label>
             <input type="date" name="startDate" id="startDate" class="form-control" />
         </div>
-        <div class="col-md-3">
+        <div class="col-md-2">
             <label for="endDate" class="form-label">End Date</label>
             <input type="date" name="endDate" id="endDate" class="form-control" />
         </div>
