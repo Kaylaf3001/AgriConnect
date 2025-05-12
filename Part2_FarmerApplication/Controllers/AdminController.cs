@@ -115,7 +115,8 @@ namespace Part2_FarmerApplication.Controllers
                     Category = p.Category,
                     ProductionDate = p.ProductionDate,
                     FarmerFirstName = p.Farmer.FirstName,
-                    FarmerLastName = p.Farmer.LastName
+                    FarmerLastName = p.Farmer.LastName,
+                    ImagePath = !string.IsNullOrEmpty(p.ImagePath) ? p.ImagePath : "/FarmersProductsImages/placeholder.jpg"
                 })
                 .ToList();
 

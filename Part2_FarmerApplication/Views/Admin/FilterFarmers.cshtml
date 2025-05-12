@@ -5,11 +5,64 @@
 }
 
 <style>
-    .farmer-image {
-        width: 150px;
-        height: 150px;
-        object-fit: cover;
-        border-radius: 8px;
+    .card-container {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 20px;
+    }
+
+    .card {
+        display: flex;
+        flex-direction: column;
+        width: 230px;
+        height: 320px;
+        background-color: white;
+        border-radius: 10px;
+        box-shadow: 0px 10px 12px rgba(0, 0, 0, 0.08), -4px -4px 12px rgba(0, 0, 0, 0.08);
+        overflow: hidden;
+        transition: all 0.3s;
+        cursor: pointer;
+        padding: 10px;
+    }
+
+        .card:hover {
+            transform: translateY(-10px);
+            box-shadow: 0px 20px 20px rgba(0, 0, 0, 0.1), -4px -4px 12px rgba(0, 0, 0, 0.08);
+        }
+
+    .card-image-container {
+        width: 100%;
+        height: 60%;
+        border-radius: 10px;
+        margin-bottom: 12px;
+        overflow: hidden;
+        background-color: rgb(165, 165, 165);
+        display: flex;
+        align-items: center;
+        justify-content: center;
+    }
+
+        .card-image-container img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+        }
+
+    .card-title {
+        font-size: 16px;
+        font-weight: 600;
+        color: #1797b8;
+        margin: 0 0 6px 0;
+    }
+
+    .card-des {
+        font-size: 13px;
+        color: #1797b8;
+        margin: 0;
+        display: -webkit-box;
+        -webkit-line-clamp: 3;
+        -webkit-box-orient: vertical;
+        overflow: hidden;
     }
 </style>
 
@@ -37,34 +90,26 @@
 </form>
 
 <!-- Filtered Results -->
-@if (Model != null && Model.Count > 0)
+@if (Model.Count == 0)
 {
-    <table class="table table-bordered">
-        <thead>
-            <tr>
-                <th>Image</th>
-                <th>Product Name</th>
-                <th>Category</th>
-                <th>Production Date</th>
-                <th>Farmer Name</th>
-            </tr>
-        </thead>
-        <tbody>
-            @foreach (var product in Model)
-            {
-                <tr>
-                    <td><img src="@product.ImagePath" alt="@product.ProductName" class="img-fluid" /></td>
-                    <td>@product.ProductName</td>
-                    <td>@product.Category</td>
-                    <td>@product.ProductionDate.ToShortDateString()</td>
-                    <td>@product.FarmerFirstName @product.FarmerLastName</td>
-                    <td><img src="@(!string.IsNullOrEmpty(product.ImagePath) ? product.ImagePath : "/FarmersProductsImages/placeholder.jpg")" alt="@product.ProductName" class="farmer-image" /></td>
-                </tr>
-            }
-        </tbody>
-    </table>
+    <p>No products available yet.</p>
 }
 else
 {
-    <p>No products found matching the criteria.</p>
+    <div class="card-container">
+        @foreach (var product in Model)
+        {
+            <div class="card">
+                <div class="card-image-container">
+                    <img src="@(!string.IsNullOrEmpty(product.ImagePath) ? product.ImagePath : "/FarmersProductsImages/placeholder.jpg")" alt="@product.ProductName" />
+                </div>
+                <p class="card-title">@product.ProductName</p>
+                <p class="card-des">
+                    Category: @product.Category <br />
+                    Date: @product.ProductionDate.ToShortDateString() <br />
+                    Farmer: @product.FarmerFirstName @product.FarmerLastName
+                </p>
+            </div>
+        }
+    </div>
 }
