@@ -58,7 +58,7 @@ namespace Part2_FarmerApplication.Controllers
                     // Sign in the user with the claims principal
                     await HttpContext.SignInAsync(CookieAuthenticationDefaults.AuthenticationScheme, claimsPrincipal);
 
-                    return RedirectToAction("AdminDashboard", "Dashboard");
+                    return RedirectToAction("AdminDashboard", "Admin");
                 }
 
                 // Check for Farmer login
@@ -80,7 +80,7 @@ namespace Part2_FarmerApplication.Controllers
 
                     await HttpContext.SignInAsync(CookieAuthenticationDefaults.AuthenticationScheme, claimsPrincipal);
 
-                    return RedirectToAction("FarmerDashboard", "Dashboard");
+                    return RedirectToAction("FarmerDashboard", "Farmer");
                 }
 
                 // If no matching user found, return error

@@ -1,0 +1,102 @@
+﻿@model Part2_FarmerApplication.ViewModels.FarmerDashboardViewModel
+
+@{
+    ViewData["Title"] = "Farmer Dashboard";
+}
+
+<style>
+    .dashboard-title {
+        font-size: 2.5rem;
+        font-weight: bold;
+        color: #2c3e50;
+        margin-bottom: 40px;
+        text-align: left;
+    }
+
+    .stats-card {
+        background: linear-gradient(135deg, #6bbf59, #a8eb12);
+        color: white;
+        padding: 25px;
+        border-radius: 15px;
+        box-shadow: 0 6px 20px rgba(0, 0, 0, 0.1);
+        text-align: center;
+        transition: transform 0.3s ease;
+    }
+
+        .stats-card:hover {
+            transform: translateY(-5px);
+        }
+
+    .stats-number {
+        font-size: 2.2rem;
+        font-weight: 700;
+        margin-top: 10px;
+    }
+
+    .section-title {
+        font-size: 1.75rem;
+        margin: 40px 0 20px;
+        color: #34495e;
+        border-bottom: 2px solid #dcdcdc;
+        padding-bottom: 8px;
+    }
+
+    .product-card {
+        border-radius: 12px;
+        border: 1px solid #e1e1e1;
+        padding: 18px;
+        margin-bottom: 20px;
+        transition: background-color 0.3s, box-shadow 0.3s;
+    }
+
+        .product-card:hover {
+            background-color: #f4fef1;
+            box-shadow: 0 4px 14px rgba(0, 0, 0, 0.05);
+        }
+
+    .emoji-icon {
+        font-size: 2rem;
+        margin-bottom: 8px;
+    }
+
+    .alert-warning {
+        background-color: #fff3cd;
+        border-color: #ffeeba;
+        color: #856404;
+        font-weight: 500;
+    }
+</style>
+
+    <h1 class="dashboard-title">🌿 Farmer Dashboard</h1>
+
+    <!-- Overview Stats -->
+    <div class="row justify-content-left mb-4">
+        <div class="col-md-4">
+            <div class="stats-card">
+                <div class="emoji-icon">🌾</div>
+                <div>Total Products</div>
+                <div class="stats-number">@Model?.TotalProducts</div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Your Products Section -->
+    <div>
+        <h2 class="section-title">📦 Your Recent Products</h2>
+        @if (Model?.Products != null && Model.Products.Any())
+        {
+            foreach (var product in Model.Products)
+            {
+                <div class="product-card">
+                    <h5>🛒 @product.Name</h5>
+                    <p><strong>Category:</strong> @product.Category</p>
+                    <p><strong>Production Date:</strong> @product.ProductionDate.ToShortDateString()</p>
+                </div>
+            }
+        }
+        else
+        {
+            <div class="alert alert-warning">No products found. Start adding some! 🌱</div>
+        }
+    </div>
+

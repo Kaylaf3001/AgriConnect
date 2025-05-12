@@ -2,6 +2,7 @@
 using Microsoft.EntityFrameworkCore;
 using Part2_FarmerApplication.Models;
 using Part2_FarmerApplication.Services;
+using Part2_FarmerApplication.ViewModels;
 using System.Security.Claims;
 
 namespace Part2_FarmerApplication.Controllers
@@ -23,10 +24,31 @@ namespace Part2_FarmerApplication.Controllers
         //----------------------------------------------------------------------------------------------------------------------
         // Admin Dashboard
         //----------------------------------------------------------------------------------------------------------------------
-        public IActionResult Dashboard()
+        public IActionResult AdminDashboard()
         {
-            return View();
+            var model = new AdminDashboardViewModel
+            {
+                TotalFarmers = _context.Farmers.Count(),
+                TotalProducts = _context.Products.Count(),
+                RecentFarmers = _context.Farmers
+                    .OrderByDescending(f => f.FarmerID)
+                    .Take(5)
+                    .ToList(),
+                RecentProducts = _context.Products
+                    .OrderByDescending(p => p.ProductID)
+                    .Take(5)
+                    .ToList()
+            };
+
+            // Debugging: Log the data
+            Console.WriteLine($"Total Farmers: {model.TotalFarmers}");
+            Console.WriteLine($"Total Products: {model.TotalProducts}");
+            Console.WriteLine($"Recent Farmers: {string.Join(", ", model.RecentFarmers.Select(f => f.FirstName))}");
+            Console.WriteLine($"Recent Products: {string.Join(", ", model.RecentProducts.Select(p => p.Name))}");
+
+            return View(model); // Just use "AdminDashboard.cshtml" directly
         }
+
         //----------------------------------------------------------------------------------------------------------------------
 
         //----------------------------------------------------------------------------------------------------------------------
@@ -135,6 +157,7 @@ namespace Part2_FarmerApplication.Controllers
             return View(result);
         }
         //----------------------------------------------------------------------------------------------------------------------
+
     }
 }
 //------------------------------------------------End-of-File-------------------------------------------------------------------

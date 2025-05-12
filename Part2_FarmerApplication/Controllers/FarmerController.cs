@@ -17,7 +17,29 @@ namespace Part2_FarmerApplication.Controllers
             _context = context;
         }
 
-        
+        public IActionResult FarmerDashboard()
+        {
+            var farmerId = int.Parse(User.FindFirstValue(ClaimTypes.NameIdentifier));
+
+            var farmer = _context.Farmers.FirstOrDefault(f => f.FarmerID == farmerId);
+
+            var products = _context.Products
+                .Where(p => p.FarmerID == farmerId)
+                .OrderByDescending(p => p.ProductionDate)
+                .Take(5)
+                .ToList();
+
+            var model = new FarmerDashboardViewModel
+            {
+                FarmerName = farmer != null ? $"{farmer.FirstName} {farmer.LastName}" : "Farmer",
+                TotalProducts = products.Count,
+                Products = products
+            };
+
+            return View(model);
+        }
+
+
         // Optional: View products created by this farmer
         public async Task<IActionResult> ViewProducts()
         {

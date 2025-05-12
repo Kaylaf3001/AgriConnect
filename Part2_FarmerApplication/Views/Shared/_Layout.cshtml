@@ -84,7 +84,7 @@
 
                 @if (userRole == "Admin")
                 {
-                    <a asp-controller="Dashboard" asp-action="AdminDashboard" class="menu-item" style="text-decoration:none; color:white;">
+                    <a asp-controller="Admin" asp-action="AdminDashboard" class="menu-item" style="text-decoration:none; color:white;">
                     <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
                               d="M5.121 17.804A10.97 10.97 0 0112 15c2.21 0 4.255.64 5.879 1.804M15 10a3 3 0 11-6 0 3 3 0 016 0z" />
@@ -109,7 +109,7 @@
                 }
                 else if (userRole == "Farmer")
                 {
-                    <a asp-controller="Dashboard" asp-action="FarmerDashboard" class="menu-item" style="text-decoration:none; color:white;">
+                    <a asp-controller="Farmer" asp-action="FarmerDashboard" class="menu-item" style="text-decoration:none; color:white;">
                     <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
                               d="M5.121 17.804A10.97 10.97 0 0112 15c2.21 0 4.255.64 5.879 1.804M15 10a3 3 0 11-6 0 3 3 0 016 0z" />
