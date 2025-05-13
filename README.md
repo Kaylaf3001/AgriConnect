@@ -15,12 +15,13 @@ Ensure the following tools are installed:
 
 ### 📂 Open the Project
 
-1. **Download the ZIP** or **Clone the Repo**  
-   If using Git:
+1. **Download the ZIP** or **Clone the Repo** 
+- Download from my GitHub here: https://github.com/Kaylaf3001/AgriConnect.git
+- Or If using Git:
    ```bash
-   git clone https://github.com/yourusername/FarmConnect.git
+   git clone https://github.com/Kaylaf3001/AgriConnect.git
 
-2. Open the .sln file in Visual Studio.
+3. Open the .sln file in Visual Studio.
 
 ## ▶️ 2. Running the Application
 ### 💻 In Visual Studio
