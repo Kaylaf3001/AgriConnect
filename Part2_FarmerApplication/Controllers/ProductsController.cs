@@ -47,11 +47,10 @@ namespace Part2_FarmerApplication.Controllers
         // Here a farmer can add a new product
         //-----------------------------------------------------------------------------------------------------------------------
         [HttpPost]
-        public async Task<IActionResult> AddProduct(ProductsModel product)
+        public async Task<IActionResult> AddProduct(ProductsModel product, IFormFile? ImageFile)
         {
             if (ModelState.IsValid)
             {
-                // Retrieve the logged-in farmer's ID from claims
                 var farmerIdClaim = User.FindFirst(ClaimTypes.NameIdentifier);
                 if (farmerIdClaim == null)
                 {
@@ -60,8 +59,6 @@ namespace Part2_FarmerApplication.Controllers
                 }
 
                 var farmerId = int.Parse(farmerIdClaim.Value);
-
-                // Get the farmer
                 var farmer = await _farmerRepo.GetFarmerByIdAsync(farmerId);
                 if (farmer == null)
                 {
@@ -69,10 +66,28 @@ namespace Part2_FarmerApplication.Controllers
                     return RedirectToAction("AddProduct");
                 }
 
-                // Assign foreign key and default image (if needed)
                 product.FarmerID = farmer.FarmerID;
                 product.Farmer = farmer;
-                product.ImagePath = "/FarmersProductsImages/default.png"; // <-- optional default image
+
+                // Handle image upload
+                if (ImageFile != null && ImageFile.Length > 0)
+                {
+                    var uploadsFolder = Path.Combine(Directory.GetCurrentDirectory(), "wwwroot/FarmersProductsImages");
+                    Directory.CreateDirectory(uploadsFolder); // Ensure folder exists
+                    var uniqueFileName = Guid.NewGuid().ToString() + Path.GetExtension(ImageFile.FileName);
+                    var filePath = Path.Combine(uploadsFolder, uniqueFileName);
+
+                    using (var stream = new FileStream(filePath, FileMode.Create))
+                    {
+                        await ImageFile.CopyToAsync(stream);
+                    }
+
+                    product.ImagePath = "/FarmersProductsImages/" + uniqueFileName;
+                }
+                else
+                {
+                    product.ImagePath = "/FarmersProductsImages/placeholder.jpg"; // Or set to null/empty if you prefer
+                }
 
                 try
                 {
