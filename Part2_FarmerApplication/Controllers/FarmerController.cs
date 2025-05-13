@@ -59,22 +59,6 @@ namespace Part2_FarmerApplication.Controllers
         //----------------------------------------------------------------------------------------------------------------------
 
         //----------------------------------------------------------------------------------------------------------------------
-        // View all products for the logged-in farmer
-        //----------------------------------------------------------------------------------------------------------------------
-        public async Task<IActionResult> ViewProducts()
-        {
-            var farmerIdClaim = User.FindFirstValue(ClaimTypes.NameIdentifier);
-            if (farmerIdClaim == null)
-                return Unauthorized();
-
-            int farmerId = int.Parse(farmerIdClaim);
-            var products = await _productRepo.GetProductsByFarmerIdAsync(farmerId);
-
-            return View(products);
-        }
-        //----------------------------------------------------------------------------------------------------------------------
-
-        //----------------------------------------------------------------------------------------------------------------------
         // List all products with farmer info (for admin or farmer)
         //----------------------------------------------------------------------------------------------------------------------
         [HttpGet]
