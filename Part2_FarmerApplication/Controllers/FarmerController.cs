@@ -35,9 +35,15 @@ namespace Part2_FarmerApplication.Controllers
             var recentProducts = products
                 .OrderByDescending(p => p.ProductionDate)
                 .Take(5)
+                .Select(p => new FarmersProductsViewModel(p, farmer))
                 .ToList();
 
-            FarmerDashboardViewModel model = new FarmerDashboardViewModel(farmer);
+            var model = new FarmerDashboardViewModel
+            {
+                Farmer = farmer,
+                TotalProducts = products.Count,
+                RecentProducts = recentProducts
+            };
 
             return View(model);
         }

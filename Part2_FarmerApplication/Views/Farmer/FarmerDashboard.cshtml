@@ -82,21 +82,22 @@
 
     <!-- Your Products Section -->
     <div>
-        <h2 class="section-title">📦 Your Recent Products</h2>
-        @if (Model?.Products != null && Model.Products.Any())
+        
+    <h2 class="section-title">📦 Your Recent Products</h2>
+    @if (Model.RecentProducts != null && Model.RecentProducts.Count > 0)
+    {
+        foreach (var product in Model.RecentProducts)
         {
-            foreach (var product in Model.Products)
-            {
-                <div class="product-card">
-                    <h5>🛒 @product.Name</h5>
-                    <p><strong>Category:</strong> @product.Category</p>
-                    <p><strong>Production Date:</strong> @product.ProductionDate.ToShortDateString()</p>
-                </div>
-            }
+            <div class="product-card">
+                <h5>🛒 @product.ProductName</h5>
+                <p><strong>Category:</strong> @product.Category</p>
+                <p><strong>Production Date:</strong> @product.ProductionDate.ToShortDateString()</p>
+            </div>
         }
-        else
-        {
-            <div class="alert alert-warning">No products found. Start adding some! 🌱</div>
-        }
+    }
+    else
+    {
+        <div class="alert alert-warning">No products found. Start adding some! 🌱</div>
+    }
     </div>
 

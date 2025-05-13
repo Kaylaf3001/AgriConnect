@@ -8,17 +8,27 @@ namespace Part2_FarmerApplication.Controllers
 {
     public class ProductsController : Controller
     {
+
+        //These are the repositories that will be used to access the data
         private readonly IProductRepository _productRepo;
         private readonly IFarmerRepository _farmerRepo;
 
+        //----------------------------------------------------------------------------------------------------------------------
+        // Constructor
+        //----------------------------------------------------------------------------------------------------------------------
         public ProductsController(IProductRepository productRepo, IFarmerRepository farmerRepo)
         {
             _productRepo = productRepo;
             _farmerRepo = farmerRepo;
         }
+        //----------------------------------------------------------------------------------------------------------------------
 
+        //----------------------------------------------------------------------------------------------------------------------
+        // Gets the products categories
+        //----------------------------------------------------------------------------------------------------------------------
         public IActionResult AddProduct()
         {
+            //The Categories available for the farmer to choose from
             ViewBag.Categories = new List<string>
             {
                 "Fruits",
@@ -31,7 +41,11 @@ namespace Part2_FarmerApplication.Controllers
 
             return View();
         }
+        //-----------------------------------------------------------------------------------------------------------------------
 
+        //-----------------------------------------------------------------------------------------------------------------------
+        // Here a farmer can add a new product
+        //-----------------------------------------------------------------------------------------------------------------------
         [HttpPost]
         public async Task<IActionResult> AddProduct(ProductsModel product)
         {
@@ -72,8 +86,9 @@ namespace Part2_FarmerApplication.Controllers
                     ModelState.AddModelError("", "An error occurred while saving the product.");
                 }
             }
-
             return View(product);
         }
+        //-----------------------------------------------------------------------------------------------------------------------
     }
 }
+//--------------------------------------------------------End--Of--File-------------------------------------------------------------

@@ -1,20 +1,21 @@
-﻿using Microsoft.AspNetCore.Mvc;
 using Part2_FarmerApplication.Models;
+using System.Collections.Generic;
 
 namespace Part2_FarmerApplication.ViewModels
 {
     public class FarmerDashboardViewModel
     {
-        public string FarmerName { get; set; }
+        public FarmerModel Farmer { get; set; }
         public int TotalProducts { get; set; }
-        public List<ProductsModel> Products { get; set; }
+        public List<FarmersProductsViewModel> RecentProducts { get; set; } = new List<FarmersProductsViewModel>();
 
-        public FarmerDashboardViewModel(FarmerModel farmer)
+        public FarmerDashboardViewModel() { }
+
+        public FarmerDashboardViewModel(FarmerModel farmer, int totalProducts, List<FarmersProductsViewModel> recentProducts)
         {
-            this.FarmerName = farmer != null ? $"{farmer.FirstName} {farmer.LastName}" : "Farmer";
-            this.TotalProducts = farmer.Products.Count;
-            this.Products = farmer.Products.OrderByDescending(p => p.ProductionDate).Take(5).ToList();
-
+            Farmer = farmer;
+            TotalProducts = totalProducts;
+            RecentProducts = recentProducts;
         }
     }
 }
