@@ -5,10 +5,11 @@ using Part2_FarmerApplication.Services;
 using System.Security.Claims;
 using System.Threading.Tasks;
 using System.Linq;
+using Part2_FarmerApplication.Services.Filters;
 
 namespace Part2_FarmerApplication.Controllers
 {
-    public class FarmerController : Controller
+    public class FarmerController : BaseController
     {
         //These are the repositories that will be used to access the data
         private readonly IFarmerRepository _farmerRepo;
@@ -28,9 +29,10 @@ namespace Part2_FarmerApplication.Controllers
         // Farmer Dashboard where the total amount of products that the farmer creates is displayed and also the top 5
         // most recent products are displayed.
         //----------------------------------------------------------------------------------------------------------------------
+        [RoleFilter("Farmer")]
         public async Task<IActionResult> FarmerDashboard()
         {
-            
+
             var farmerIdClaim = User.FindFirstValue(ClaimTypes.NameIdentifier);
             if (farmerIdClaim == null)
                 return Unauthorized();
@@ -40,17 +42,13 @@ namespace Part2_FarmerApplication.Controllers
             if (farmer == null)
                 return NotFound();
 
-            var products = await _productRepo.GetProductsByFarmerIdAsync(farmerId);
-            var recentProducts = products
-                .OrderByDescending(p => p.ProductionDate)
-                .Take(5)
-                .Select(p => new FarmersProductsViewModel(p, farmer))
-                .ToList();
+            var recentProducts = await _farmerRepo.GetRecentProductsViewModelByFarmerAsync(farmerId, 5);
+            var totalProducts = await _farmerRepo.GetProductsByFarmerAsync(farmerId);
 
             var model = new FarmerDashboardViewModel
             {
                 Farmer = farmer,
-                TotalProducts = products.Count,
+                TotalProducts = totalProducts.Count,
                 RecentProducts = recentProducts
             };
 
@@ -61,29 +59,20 @@ namespace Part2_FarmerApplication.Controllers
         //----------------------------------------------------------------------------------------------------------------------
         // List all products with farmer info (for admin or farmer)
         //----------------------------------------------------------------------------------------------------------------------
+        [RoleFilter("Farmer")]
         [HttpGet]
-        public IActionResult FarmersProducts()
+        public async Task<IActionResult> FarmersProducts()
         {
             var userRole = User.FindFirstValue(ClaimTypes.Role);
             var userId = User.FindFirstValue(ClaimTypes.NameIdentifier);
 
-            var query = _productRepo.GetAllProductsWithFarmers();
-
-            if (userRole == "Farmer" && int.TryParse(userId, out int farmerId))
+            int? farmerId = null;
+            if (userRole == "Farmer" && int.TryParse(userId, out int id))
             {
-                query = query.Where(p => p.FarmerID == farmerId);
+                farmerId = id;
             }
 
-            var products = query.Select(p => new FarmersProductsViewModel
-            {
-                ProductID = p.ProductID,
-                ProductName = p.Name,
-                Category = p.Category,
-                ProductionDate = p.ProductionDate,
-                FarmerFirstName = p.Farmer.FirstName,
-                FarmerLastName = p.Farmer.LastName,
-                ImagePath = !string.IsNullOrEmpty(p.ImagePath) ? p.ImagePath : "/FarmersProductsImages/placeholder.jpg"
-            }).ToList();
+            var products = await _farmerRepo.GetFarmersProductsViewModelsAsync(userRole, farmerId);
             return View(products);
         }
         //----------------------------------------------------------------------------------------------------------------------

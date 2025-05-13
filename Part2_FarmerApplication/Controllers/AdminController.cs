@@ -3,12 +3,13 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using Part2_FarmerApplication.Models;
 using Part2_FarmerApplication.Services;
+using Part2_FarmerApplication.Services.Filters;
 using Part2_FarmerApplication.ViewModels;
 using System.Security.Claims;
 
 namespace Part2_FarmerApplication.Controllers
 {
-    public class AdminController : Controller
+    public class AdminController : BaseController
     {
         //These are the repositories that will be used to access the data
         private readonly IFarmerRepository _farmerRepo;
@@ -25,6 +26,7 @@ namespace Part2_FarmerApplication.Controllers
         //----------------------------------------------------------------------------------------------------------------------
         // Admin Dashboard
         //----------------------------------------------------------------------------------------------------------------------
+        [RoleFilter("Admin")]
         public async Task<IActionResult> AdminDashboard()
         {
             var model = new AdminDashboardViewModel
@@ -89,31 +91,11 @@ namespace Part2_FarmerApplication.Controllers
         //----------------------------------------------------------------------------------------------------------------------
         // Filter by category/date range
         //----------------------------------------------------------------------------------------------------------------------
-        public IActionResult FilterFarmers(string category, string farmerName, DateTime? startDate, DateTime? endDate)
+        public async Task<IActionResult> FilterFarmers(string category, string farmerName, DateTime? startDate, DateTime? endDate)
         {
             ViewBag.Categories = _productRepo.GetUniqueCategories();
 
-            var query = _productRepo.GetAllProductsWithFarmers();
-
-            if (!string.IsNullOrEmpty(category))
-                query = query.Where(p => p.Category == category);
-
-            if (!string.IsNullOrEmpty(farmerName))
-                query = query.Where(p => (p.Farmer.FirstName + " " + p.Farmer.LastName).Contains(farmerName));
-
-            if (startDate.HasValue && endDate.HasValue)
-                query = query.Where(p => p.ProductionDate >= startDate && p.ProductionDate <= endDate);
-
-            var result = query.Select(p => new FarmersProductsViewModel
-            {
-                ProductID = p.ProductID,
-                ProductName = p.Name,
-                Category = p.Category,
-                ProductionDate = p.ProductionDate,
-                FarmerFirstName = p.Farmer.FirstName,
-                FarmerLastName = p.Farmer.LastName,
-                ImagePath = !string.IsNullOrEmpty(p.ImagePath) ? p.ImagePath : "/FarmersProductsImages/placeholder.jpg"
-            }).ToList();
+            var result = await _farmerRepo.FilterFarmersProductsAsync(category, farmerName, startDate, endDate);
 
             return View(result);
         }

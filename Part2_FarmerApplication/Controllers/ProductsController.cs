@@ -6,7 +6,7 @@ using System.Security.Claims;
 
 namespace Part2_FarmerApplication.Controllers
 {
-    public class ProductsController : Controller
+    public class ProductsController : BaseController
     {
 
         //These are the repositories that will be used to access the data
