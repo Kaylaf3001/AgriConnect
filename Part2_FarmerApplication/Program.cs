@@ -4,14 +4,17 @@ using Part2_FarmerApplication.Services;
 
 var builder = WebApplication.CreateBuilder(args);
 
-// ✅ Register DbContext *before* building the app
+// Register DbContext *before* building the app
 builder.Services.AddDbContext<AppDbContext>(options =>
     options.UseSqlite(builder.Configuration.GetConnectionString("DefaultConnection")));
 
 // Add MVC services
 builder.Services.AddControllersWithViews();
 
-// ✅ Configure Cookie Authentication
+builder.Services.AddScoped<IFarmerRepository, FarmerRepository>();
+builder.Services.AddScoped<IProductRepository, ProductRepository>();
+
+// Configure Cookie Authentication
 builder.Services.AddAuthentication(CookieAuthenticationDefaults.AuthenticationScheme)
     .AddCookie(options =>
     {
@@ -20,7 +23,6 @@ builder.Services.AddAuthentication(CookieAuthenticationDefaults.AuthenticationSc
         options.ExpireTimeSpan = TimeSpan.FromMinutes(30); // Cookie lifespan
     });
 
-// Register other services if needed (like authentication, authorization, etc.)
 
 var app = builder.Build();
 

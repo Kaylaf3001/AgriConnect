@@ -1,105 +1,79 @@
 ﻿using Microsoft.AspNetCore.Mvc;
-using Microsoft.EntityFrameworkCore;
 using Part2_FarmerApplication.Models;
 using Part2_FarmerApplication.Services;
-using Microsoft.AspNetCore.Hosting;
-using Microsoft.AspNetCore.Http;
-using System.IO;
+using Microsoft.EntityFrameworkCore;
+using System.Security.Claims;
 
 namespace Part2_FarmerApplication.Controllers
 {
     public class ProductsController : Controller
     {
-        private readonly AppDbContext _context;
-        private readonly IWebHostEnvironment _webHostEnvironment;
+        private readonly IProductRepository _productRepo;
+        private readonly IFarmerRepository _farmerRepo;
 
-        public ProductsController(AppDbContext context, IWebHostEnvironment webHostEnvironment)
+        public ProductsController(IProductRepository productRepo, IFarmerRepository farmerRepo)
         {
-            _context = context;
-            _webHostEnvironment = webHostEnvironment;
+            _productRepo = productRepo;
+            _farmerRepo = farmerRepo;
         }
 
         public IActionResult AddProduct()
-    {
-        // Predefined list of categories
-        ViewBag.Categories = new List<string>
         {
-            "Fruits",
-            "Vegetables",
-            "Dairy",
-            "Grains",
-            "Meat",
-            "Poultry"
-        };
+            ViewBag.Categories = new List<string>
+            {
+                "Fruits",
+                "Vegetables",
+                "Dairy",
+                "Grains",
+                "Meat",
+                "Poultry"
+            };
 
-        return View();
-    }
+            return View();
+        }
 
         [HttpPost]
-        public async Task<IActionResult> AddProduct(ProductsModel product, IFormFile? Image)
+        public async Task<IActionResult> AddProduct(ProductsModel product)
         {
             if (ModelState.IsValid)
             {
                 // Retrieve the logged-in farmer's ID from claims
-                var farmerIdClaim = User.FindFirst(System.Security.Claims.ClaimTypes.NameIdentifier);
+                var farmerIdClaim = User.FindFirst(ClaimTypes.NameIdentifier);
                 if (farmerIdClaim == null)
                 {
                     ModelState.AddModelError("", "Farmer is not logged in.");
-                    return RedirectToAction("AddProduct", "Products");
+                    return RedirectToAction("AddProduct");
                 }
 
                 var farmerId = int.Parse(farmerIdClaim.Value);
 
-                // Check if the farmer exists in the database
-                var farmer = await _context.Farmers.FirstOrDefaultAsync(f => f.FarmerID == farmerId);
+                // Get the farmer
+                var farmer = await _farmerRepo.GetFarmerByIdAsync(farmerId);
                 if (farmer == null)
                 {
                     ModelState.AddModelError("", "Farmer not found.");
-                    return RedirectToAction("AddProduct", "Products");
+                    return RedirectToAction("AddProduct");
                 }
 
-                // Handle image upload
-                if (Image != null && Image.Length > 0)
-                {
-                    var uploadsFolder = Path.Combine(_webHostEnvironment.WebRootPath, "FarmersProductsImages");
-                    if (!Directory.Exists(uploadsFolder))
-                    {
-                        Directory.CreateDirectory(uploadsFolder); // Ensure the directory exists
-                    }
-
-                    var uniqueFileName = Guid.NewGuid().ToString() + "_" + Image.FileName;
-                    var filePath = Path.Combine(uploadsFolder, uniqueFileName);
-
-                    using (var fileStream = new FileStream(filePath, FileMode.Create))
-                    {
-                        await Image.CopyToAsync(fileStream);
-                    }
-
-                    product.ImagePath = "/FarmersProductsImages/" + uniqueFileName;
-                }
-
-                // Assign the FarmerID and Farmer navigation property to the product
+                // Assign foreign key and default image (if needed)
                 product.FarmerID = farmer.FarmerID;
                 product.Farmer = farmer;
+                product.ImagePath = "/FarmersProductsImages/default.png"; // <-- optional default image
 
                 try
                 {
-                    // Add the product to the database
-                    _context.Products.Add(product);
-                    await _context.SaveChangesAsync();
-
+                    await _productRepo.AddProductAsync(product);
                     TempData["ProductAdded"] = true;
-                    return RedirectToAction("AddProduct", "Products");
+                    return RedirectToAction("AddProduct");
                 }
                 catch (Exception ex)
                 {
-                    // Log the exception
                     Console.WriteLine($"Error adding product: {ex.Message}");
                     ModelState.AddModelError("", "An error occurred while saving the product.");
                 }
             }
 
-            return RedirectToAction("AddProduct", "Products");
+            return View(product);
         }
     }
 }
