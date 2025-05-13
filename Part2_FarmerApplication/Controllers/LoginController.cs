@@ -84,7 +84,7 @@ namespace Part2_FarmerApplication.Controllers
                 }
 
                 // If no matching user found, return error
-                ModelState.AddModelError(string.Empty, "Invalid login attempt.");
+                ModelState.AddModelError(nameof(model.Password), "Invalid login attempt. Please ensure you password and email is valid.");
             }
 
             return View(model);

@@ -91,7 +91,7 @@
         <h1>Good to see you again!</h1>
 
         <div class="form-wrapper">
-            <label class="label">
+            <label class="label"> 
                 <input type="email" class="input" placeholder="Enter Email" autocomplete="off" asp-for="Email" />
                 <span class="icon">
                     <svg class="w-6 h-6" xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="none" viewBox="0 0 24 24">
@@ -99,11 +99,17 @@
                     </svg>
                 </span>
             </label>
-
+            <span asp-validation-for="Email" class="text-danger"></span>
+            
             <label class="label">
                 <input type="password" class="input" placeholder="Password" autocomplete="off" asp-for="Password" />
             </label>
+            <span asp-validation-for="Password" class="text-danger"></span>
         </div>
         <button type="submit" class="pill-button">Login</button>
     </div>
 </form>
+
+@section Scripts {
+    <partial name="_ValidationScriptsPartial" />
+}

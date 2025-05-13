@@ -10,18 +10,27 @@ namespace Part2_FarmerApplication.Controllers
 {
     public class FarmerController : Controller
     {
+        //These are the repositories that will be used to access the data
         private readonly IFarmerRepository _farmerRepo;
         private readonly IProductRepository _productRepo;
 
+        //----------------------------------------------------------------------------------------------------------------------
+        // Constructor
+        //----------------------------------------------------------------------------------------------------------------------
         public FarmerController(IFarmerRepository farmerRepo, IProductRepository productRepo)
         {
             _farmerRepo = farmerRepo;
             _productRepo = productRepo;
         }
+        //----------------------------------------------------------------------------------------------------------------------
 
-        // Farmer Dashboard
+        //----------------------------------------------------------------------------------------------------------------------
+        // Farmer Dashboard where the total amount of products that the farmer creates is displayed and also the top 5
+        // most recent products are displayed.
+        //----------------------------------------------------------------------------------------------------------------------
         public async Task<IActionResult> FarmerDashboard()
         {
+            
             var farmerIdClaim = User.FindFirstValue(ClaimTypes.NameIdentifier);
             if (farmerIdClaim == null)
                 return Unauthorized();
@@ -47,8 +56,11 @@ namespace Part2_FarmerApplication.Controllers
 
             return View(model);
         }
+        //----------------------------------------------------------------------------------------------------------------------
 
+        //----------------------------------------------------------------------------------------------------------------------
         // View all products for the logged-in farmer
+        //----------------------------------------------------------------------------------------------------------------------
         public async Task<IActionResult> ViewProducts()
         {
             var farmerIdClaim = User.FindFirstValue(ClaimTypes.NameIdentifier);
@@ -60,8 +72,11 @@ namespace Part2_FarmerApplication.Controllers
 
             return View(products);
         }
+        //----------------------------------------------------------------------------------------------------------------------
 
+        //----------------------------------------------------------------------------------------------------------------------
         // List all products with farmer info (for admin or farmer)
+        //----------------------------------------------------------------------------------------------------------------------
         [HttpGet]
         public IActionResult FarmersProducts()
         {
@@ -85,8 +100,9 @@ namespace Part2_FarmerApplication.Controllers
                 FarmerLastName = p.Farmer.LastName,
                 ImagePath = !string.IsNullOrEmpty(p.ImagePath) ? p.ImagePath : "/FarmersProductsImages/placeholder.jpg"
             }).ToList();
-
             return View(products);
         }
+        //----------------------------------------------------------------------------------------------------------------------
     }
 }
+//--------------------------------------End--Of--File----------------------------------------------------------------------------

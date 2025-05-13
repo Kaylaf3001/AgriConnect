@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using Humanizer;
+using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using Part2_FarmerApplication.Models;
 using Part2_FarmerApplication.Services;
@@ -9,10 +10,13 @@ namespace Part2_FarmerApplication.Controllers
 {
     public class AdminController : Controller
     {
-
+        //These are the repositories that will be used to access the data
         private readonly IFarmerRepository _farmerRepo;
         private readonly IProductRepository _productRepo;
 
+        //----------------------------------------------------------------------------------------------------------------------
+        // Constructor
+        //----------------------------------------------------------------------------------------------------------------------
         public AdminController(IFarmerRepository farmerRepo, IProductRepository productRepo)
         {
             _farmerRepo = farmerRepo;
@@ -33,7 +37,6 @@ namespace Part2_FarmerApplication.Controllers
 
             return View(model);
         }
-
         //----------------------------------------------------------------------------------------------------------------------
 
         //----------------------------------------------------------------------------------------------------------------------
@@ -81,7 +84,6 @@ namespace Part2_FarmerApplication.Controllers
 
             return View(farmer);
         }
-
         //----------------------------------------------------------------------------------------------------------------------
 
         //----------------------------------------------------------------------------------------------------------------------
@@ -115,7 +117,6 @@ namespace Part2_FarmerApplication.Controllers
 
             return View(result);
         }
-
         //----------------------------------------------------------------------------------------------------------------------
 
     }
