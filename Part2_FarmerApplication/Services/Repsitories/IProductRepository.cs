@@ -1,5 +1,11 @@
 ﻿using Part2_FarmerApplication.Models;
 
+//-------------------------------------------------------------------------------------------------
+// This interface defines the contract for the Product repository.
+// It includes methods for retrieving, adding, and filtering products.
+// It is used to abstract the data access layer from the business logic layer.
+//-------------------------------------------------------------------------------------------------
+
 public interface IProductRepository
 {
     int GetTotalProducts();
@@ -10,3 +16,4 @@ public interface IProductRepository
     Task<ProductsModel?> GetProductByIdAsync(int productId);
     Task<List<ProductsModel>> GetProductsByFarmerIdAsync(int farmerId);
 }
+//---------------------------------End--Of--File------------------------------------------------------------

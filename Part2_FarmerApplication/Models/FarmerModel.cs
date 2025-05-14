@@ -1,6 +1,9 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using System.ComponentModel.DataAnnotations;
 
+//---------------------------------------------------------------------------------
+// This is the model for the Farmer
+//---------------------------------------------------------------------------------
 namespace Part2_FarmerApplication.Models
 {
     public class FarmerModel
@@ -29,7 +32,9 @@ namespace Part2_FarmerApplication.Models
         // Parameterless constructor (required for EF Core)
         public FarmerModel() { }
 
+        ////---------------------------------------------------------------------------------
         // Constructor to enforce initialization
+        //---------------------------------------------------------------------------------
         public FarmerModel(string firstName, string lastName, string city, int contactNumber, string email, string password)
         {
             FirstName = firstName;
@@ -41,5 +46,7 @@ namespace Part2_FarmerApplication.Models
             Role = "Farmer"; // Default value
             Products = new List<ProductsModel>(); // Initialize collection
         }
+        //---------------------------------------------------------------------------------
     }
 }
+//-------------------------------End--Of--File-------------------------------------------------

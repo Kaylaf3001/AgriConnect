@@ -1,10 +1,17 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using System.ComponentModel.DataAnnotations;
 
+//---------------------------------------------------------------------------------
+// This is the model for the Admin
+// It contains the properties that will be used to store the data
+// It also contains the navigation property to the FarmerModel
+//---------------------------------------------------------------------------------
+
 namespace Part2_FarmerApplication.Models
 {
     public class AdminModel
     {
+        // Primary Key
         [Key]
         public int AdminID { get; set; }
 
@@ -20,13 +27,17 @@ namespace Part2_FarmerApplication.Models
         // Parameterless constructor (required for EF Core)
         public AdminModel() { }
 
+        //---------------------------------------------------------------------------------
         // Constructor to enforce initialization
+        //---------------------------------------------------------------------------------
         public AdminModel(string name, string email, string role = "Employee")
         {
             Name = name;
             Email = email;
             Role = role;
-            Farmers = new List<FarmerModel>(); // Initialize collection
+            Farmers = new List<FarmerModel>();
         }
+        //---------------------------------------------------------------------------------
     }
 }
+//--------------------------End--Of--File---------------------------------------------------

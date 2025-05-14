@@ -1,6 +1,12 @@
 using Part2_FarmerApplication.Models;
 using System.Collections.Generic;
 
+//-------------------------------------------------------------------------------------------------
+// This class represents the view model for the farmer dashboard.
+// It contains properties for the farmer details, total number of products,
+// and a list of recent products.
+//------------------------------------------------------------------------------------------
+
 namespace Part2_FarmerApplication.ViewModels
 {
     public class FarmerDashboardViewModel
@@ -19,3 +25,4 @@ namespace Part2_FarmerApplication.ViewModels
         }
     }
 }
+//------------------------------End--Of--File---------------------------------------------------------------

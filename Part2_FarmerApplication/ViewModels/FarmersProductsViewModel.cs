@@ -1,5 +1,11 @@
 ﻿using Part2_FarmerApplication.Models;
 
+//-------------------------------------------------------------------------------------------------
+// This class represents the view model for the farmer's products.
+// It contains properties for the product ID, name, category, production date,
+// farmer's first and last name, and the image path.
+//-------------------------------------------------------------------------------------------------
+
 namespace Part2_FarmerApplication.ViewModels
 {
     public class FarmersProductsViewModel
@@ -14,7 +20,9 @@ namespace Part2_FarmerApplication.ViewModels
 
         public FarmersProductsViewModel() { }
 
+        //----------------------------------------------------------------------------------
         // Fixed constructor name
+        //----------------------------------------------------------------------------------
         public FarmersProductsViewModel(ProductsModel product, FarmerModel farmer)
         {
             this.ProductID = product.ProductID;
@@ -25,5 +33,7 @@ namespace Part2_FarmerApplication.ViewModels
             this.FarmerLastName = farmer.LastName;
             this.ImagePath = product.ImagePath;
         }
+        //----------------------------------------------------------------------------------
     }
 }
+//---------------------------------End--Of--File---------------------------------------------------------------------------------

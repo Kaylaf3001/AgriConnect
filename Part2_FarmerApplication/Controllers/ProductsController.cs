@@ -4,11 +4,17 @@ using Part2_FarmerApplication.Services;
 using Microsoft.EntityFrameworkCore;
 using System.Security.Claims;
 
+//---------------------------------------------------------------------------------
+// This is the controller for the Products section of the application
+// It handles adding products for farmers
+// It uses the ProductRepository and FarmerRepository to access the data
+// It also uses the ProductsModel to pass data to the view
+//---------------------------------------------------------------------------------
+
 namespace Part2_FarmerApplication.Controllers
 {
     public class ProductsController : BaseController
     {
-
         //These are the repositories that will be used to access the data
         private readonly IProductRepository _productRepo;
         private readonly IFarmerRepository _farmerRepo;
@@ -36,7 +42,10 @@ namespace Part2_FarmerApplication.Controllers
                 "Dairy",
                 "Grains",
                 "Meat",
-                "Poultry"
+                "Poultry",
+                "Technology",
+                "Equipment",
+                "Seeds"
             };
 
             return View();
@@ -66,6 +75,7 @@ namespace Part2_FarmerApplication.Controllers
                     return RedirectToAction("AddProduct");
                 }
 
+                // Set the product's properties
                 product.FarmerID = farmer.FarmerID;
                 product.Farmer = farmer;
 
