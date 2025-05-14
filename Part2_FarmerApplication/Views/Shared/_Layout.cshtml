@@ -102,17 +102,28 @@
                     </a>
 
                     <a asp-controller="Admin" asp-action="CreateFarmer" class="menu-item">
-                        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" stroke="currentColor">
-                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                                  d="M4 6h16M4 12h8m-8 6h16" />
+                        <svg width="24" height="24" fill="none" stroke="currentColor" stroke-width="2"
+                             stroke-linecap="round" stroke-linejoin="round" viewBox="0 0 24 24">
+                            <line x1="12" y1="5" x2="12" y2="19" />
+                            <line x1="5" y1="12" x2="19" y2="12" />
                         </svg>
                         <span>Add a Farmer</span>
                     </a>
+                   
 
-                    <a asp-controller="Admin" asp-action="FilterFarmers" class="menu-item">
+                    <a asp-controller="Admin" asp-action="ViewFarmers" class="menu-item">
                         <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" stroke="currentColor">
                             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
                                   d="M10 4a6 6 0 100 12 6 6 0 000-12zm0 0l6 6" />
+                        </svg>
+                        <span>Farmers</span>
+                    </a>
+
+                    <a asp-controller="Admin" asp-action="FilterFarmers" class="menu-item">
+                        <svg width="24" height="24" fill="none" stroke="currentColor" stroke-width="2"
+                             stroke-linecap="round" stroke-linejoin="round" viewBox="0 0 24 24">
+                            <circle cx="11" cy="11" r="8" />
+                            <line x1="21" y1="21" x2="16.65" y2="16.65" />
                         </svg>
                         <span>Search</span>
                     </a>
@@ -146,10 +157,13 @@
 
                 <form id="logoutForm" asp-controller="Login" asp-action="Logout" method="post" style="display:inline;">
                     <button type="submit" class="menu-item">
-                        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" stroke="currentColor">
-                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                                  d="M17 16l4-4m0 0l-4-4m4 4H7m6 4v1a1 1 0 01-1 1H5a1 1 0 01-1-1V7a1 1 0 011-1h7a1 1 0 011 1v1" />
+                        <svg width="24" height="24" fill="none" stroke="currentColor" stroke-width="2"
+                             stroke-linecap="round" stroke-linejoin="round" viewBox="0 0 24 24">
+                            <path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4" />
+                            <polyline points="16 17 21 12 16 7" />
+                            <line x1="21" y1="12" x2="9" y2="12" />
                         </svg>
+
                         <span>Logout</span>
                     </button>
                 </form>

@@ -20,6 +20,8 @@ public interface IFarmerRepository
     Task<List<FarmersProductsViewModel>> GetRecentProductsViewModelByFarmerAsync(int farmerId, int count);
     Task<List<FarmersProductsViewModel>> GetFarmersProductsViewModelsAsync(string userRole, int? farmerId);
     Task<List<FarmersProductsViewModel>> FilterFarmersProductsAsync(string? category, string? farmerName, DateTime? startDate, DateTime? endDate);
+    Task<List<FarmerModel>> GetFarmersByAdminIdAsync(int adminId);
+
 }
 
 //---------------------------------End--Of--File------------------------------------------------------------

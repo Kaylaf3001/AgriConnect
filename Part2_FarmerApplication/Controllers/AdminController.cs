@@ -1,4 +1,5 @@
 ﻿using Humanizer;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using Part2_FarmerApplication.Models;
@@ -47,10 +48,31 @@ namespace Part2_FarmerApplication.Controllers
             return View(model);
         }
         //----------------------------------------------------------------------------------------------------------------------
+        //This action method is responsible for displaying the list of farmers
+        //--------------------------------------------------------------------------------------------------------
+        [RoleFilter("Admin")]
+        [HttpGet]
+        public async Task<IActionResult> ViewFarmers()
+        {
+            // Get the admin ID from the claims
+            var adminIdClaim = User.FindFirstValue(ClaimTypes.NameIdentifier);
+
+            // Check if the admin ID claim is null or empty
+            if (string.IsNullOrEmpty(adminIdClaim))
+                return Unauthorized();
+
+            // Parse the admin ID claim to an integer
+            int adminId = int.Parse(adminIdClaim);
+            var farmers = await _farmerRepo.GetFarmersByAdminIdAsync(adminId);
+
+            return View(farmers);
+        }
+        //----------------------------------------------------------------------------------------------------------------------
 
         //----------------------------------------------------------------------------------------------------------------------
         // Create Farmer form
         //----------------------------------------------------------------------------------------------------------------------
+        [RoleFilter("Admin")]
         [HttpGet]
         public IActionResult CreateFarmer()
         {
@@ -61,6 +83,7 @@ namespace Part2_FarmerApplication.Controllers
         //----------------------------------------------------------------------------------------------------------------------
         // Here an admin can create a new farmer
         //----------------------------------------------------------------------------------------------------------------------
+        [RoleFilter("Admin")]
         [HttpPost]
         public async Task<IActionResult> CreateFarmer(FarmerModel farmer)
         {
@@ -97,6 +120,7 @@ namespace Part2_FarmerApplication.Controllers
         //----------------------------------------------------------------------------------------------------------------------
         // Filter by category/date range
         //----------------------------------------------------------------------------------------------------------------------
+        [RoleFilter("Admin")]
         public async Task<IActionResult> FilterFarmers(string category, string farmerName, DateTime? startDate, DateTime? endDate)
         {
             ViewBag.Categories = _productRepo.GetUniqueCategories();
