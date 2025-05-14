@@ -1,35 +1,86 @@
 ﻿@model List<Part2_FarmerApplication.Models.FarmerModel>
 
 @{
-    ViewBag.Title = "Farmers Created by You";
+    ViewData["Title"] = "Farmers Created by You";
 }
 
-<h2>Farmers Created by You</h2>
+<!-- List Styling -->
+<style>
+    .farmers-title {
+        font-size: 2.2rem;
+        font-weight: bold;
+        color: #2c3e50;
+        margin-bottom: 25px;
+    }
+
+    .farmer-list {
+        list-style: none;
+        padding: 0;
+        margin: 0;
+    }
+
+    .farmer-item {
+        background: #e6ebe7;
+        color: black;
+        padding: 16px 20px;
+        border-radius: 10px;
+        margin-bottom: 15px;
+        display: flex;
+        flex-direction: column;
+        box-shadow: 0 6px 12px rgba(0, 0, 0, 0.1);
+        transition: background 0.3s ease;
+    }
+
+        .farmer-item:hover {
+            background: #a6bfab;
+        }
+
+    .farmer-line {
+        font-size: 1.1rem;
+        margin: 2px 0;
+    }
+
+    .farmer-label {
+        font-weight: 600;
+        margin-right: 5px;
+        display: inline-block;
+        width: 90px;
+        color: #042e0c;
+    }
+
+    .empty-state {
+        background: #f8f8f8;
+        padding: 30px;
+        border-radius: 10px;
+        text-align: center;
+        color: #666;
+        border: 2px dashed #ccc;
+        font-size: 1.1rem;
+        margin-top: 20px;
+    }
+</style>
+
+<h1 class="farmers-title">👨‍🌾 Farmers You Created</h1>
 
 @if (Model != null && Model.Any())
 {
-    <table class="table">
-        <thead>
-            <tr>
-                <th>Farmer ID</th>
-                <th>Name</th>
-                <th>Email</th>
-                <th>Contact</th>
-            </tr>
-        </thead>
-        <tbody>
-            @foreach (var farmer in Model)
-            {
-                <tr>
-                    <td>@farmer.FarmerID</td>
-                    <td>@farmer.FirstName @farmer.LastName</td>
-                    <td>@farmer.Email</td>
-                </tr>
-            }
-        </tbody>
-    </table>
+    <ul class="farmer-list">
+        @foreach (var farmer in Model)
+        {
+            <li class="farmer-item">
+                <div class="farmer-line">
+                    <span class="farmer-label">Name:</span> @farmer.FirstName @farmer.LastName
+                </div>
+                <div class="farmer-line">
+                    <span class="farmer-label">Email:</span> @farmer.Email
+                </div>
+            </li>
+        }
+    </ul>
 }
 else
 {
-    <p>No farmers found.</p>
+    <div class="empty-state">
+        <p>😔 No farmers found under your account.</p>
+    </div>
 }
