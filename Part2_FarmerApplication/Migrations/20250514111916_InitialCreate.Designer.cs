@@ -11,7 +11,7 @@ using Part2_FarmerApplication.Services;
 namespace Part2_FarmerApplication.Migrations
 {
     [DbContext(typeof(AppDbContext))]
-    [Migration("20250512093223_InitialCreate")]
+    [Migration("20250514111916_InitialCreate")]
     partial class InitialCreate
     {
         /// <inheritdoc />
@@ -50,7 +50,7 @@ namespace Part2_FarmerApplication.Migrations
                         new
                         {
                             AdminID = 1,
-                            Email = "admin@example.com",
+                            Email = "admin@gmail.com",
                             Name = "Admin User",
                             Password = "admin123",
                             Role = "Admin"
@@ -104,12 +104,12 @@ namespace Part2_FarmerApplication.Migrations
                         {
                             FarmerID = 1,
                             AdminID = 1,
-                            City = "GreenVille",
+                            City = "Cape Town",
                             ContactNumber = 1234567890,
-                            Email = "farmer@example.com",
-                            FirstName = "John",
-                            LastName = "Doe",
-                            Password = "farmer123",
+                            Email = "Brown@gmail.com",
+                            FirstName = "Farmer",
+                            LastName = "Brown",
+                            Password = "brown123",
                             Role = "Farmer"
                         });
                 });

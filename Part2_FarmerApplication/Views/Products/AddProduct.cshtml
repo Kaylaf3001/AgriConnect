@@ -58,6 +58,22 @@
         margin-top: 5px;
         display: block;
     }
+
+    .popup {
+        display: none;
+        position: fixed;
+        top: 30%;
+        left: 40%;
+        background-color: #ffffff;
+        padding: 20px;
+        border-radius: 10px;
+        box-shadow: 0 0 15px rgba(0, 0, 0, 0.2);
+        z-index: 1000;
+    }
+
+    .popup-content h3 {
+        margin-bottom: 15px;
+    }
 </style>
 
 <div class="form-container">
@@ -102,6 +118,33 @@
     </form>
 </div>
 
+<!-- Popup for Product Added -->
+<div id="productAddedPopup" class="popup">
+    <div class="popup-content">
+        <h3>Product Added Successfully!</h3>
+        <button onclick="closePopup()" class="btn btn-secondary">Close</button>
+    </div>
+</div>
+
 @section Scripts {
     <partial name="_ValidationScriptsPartial" />
+
+    <script>
+        // Function to show the popup
+        function showPopup() {
+            document.getElementById('productAddedPopup').style.display = 'block';
+        }
+
+        // Function to close the popup
+        function closePopup() {
+            document.getElementById('productAddedPopup').style.display = 'none';
+        }
+
+        // Show popup after form submission
+        @if (TempData["ProductAdded"] != null)
+        {
+            <text>showPopup();</text>
+        }
+    </script>
 }
+

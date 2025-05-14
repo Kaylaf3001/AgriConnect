@@ -79,12 +79,12 @@ namespace Part2_FarmerApplication.Migrations
             migrationBuilder.InsertData(
                 table: "Admins",
                 columns: new[] { "AdminID", "Email", "Name", "Password", "Role" },
-                values: new object[] { 1, "admin@example.com", "Admin User", "admin123", "Admin" });
+                values: new object[] { 1, "admin@gmail.com", "Admin User", "admin123", "Admin" });
 
             migrationBuilder.InsertData(
                 table: "Farmers",
                 columns: new[] { "FarmerID", "AdminID", "City", "ContactNumber", "Email", "FirstName", "LastName", "Password", "Role" },
-                values: new object[] { 1, 1, "GreenVille", 1234567890, "farmer@example.com", "John", "Doe", "farmer123", "Farmer" });
+                values: new object[] { 1, 1, "Cape Town", 1234567890, "Brown@gmail.com", "Farmer", "Brown", "brown123", "Farmer" });
 
             migrationBuilder.CreateIndex(
                 name: "IX_Farmers_AdminID",

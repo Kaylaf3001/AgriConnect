@@ -51,7 +51,7 @@ namespace Part2_FarmerApplication.Services
             {
                 AdminID = 1,
                 Name = "Admin User",
-                Email = "admin@example.com",
+                Email = "admin@gmail.com",
                 Password = "admin123",
                 Role = "Admin"
             });
@@ -63,12 +63,12 @@ namespace Part2_FarmerApplication.Services
             modelBuilder.Entity<FarmerModel>().HasData(new FarmerModel
             {
                 FarmerID = 1,
-                FirstName = "John",
-                LastName = "Doe",
-                City = "GreenVille",
+                FirstName = "Farmer",
+                LastName = "Brown",
+                City = "Cape Town",
                 ContactNumber = 1234567890,
-                Email = "farmer@example.com",
-                Password = "farmer123",
+                Email = "Brown@gmail.com",
+                Password = "brown123",
                 Role = "Farmer",
                 AdminID = 1
             });
