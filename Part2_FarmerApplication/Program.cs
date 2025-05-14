@@ -2,6 +2,7 @@
 using Microsoft.EntityFrameworkCore;
 using Part2_FarmerApplication.Services;
 
+// This is the main entry point for the application.
 var builder = WebApplication.CreateBuilder(args);
 
 // Register DbContext *before* building the app
@@ -10,7 +11,6 @@ builder.Services.AddDbContext<AppDbContext>(options =>
 
 // Add MVC services
 builder.Services.AddControllersWithViews();
-
 builder.Services.AddScoped<IFarmerRepository, FarmerRepository>();
 builder.Services.AddScoped<IProductRepository, ProductRepository>();
 builder.Services.AddScoped<ILoginRepository, LoginRepository>();
