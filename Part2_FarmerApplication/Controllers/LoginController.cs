@@ -6,96 +6,116 @@ using Part2_FarmerApplication.Services;
 using Part2_FarmerApplication.ViewModels;
 using System.Security.Claims;
 
+//------------------------------------------------------------------------------------------------------
+// This is the controller for the Login section of the application
+// It handles the login and logout actions
+// It uses the AppDbContext to access the data
+//------------------------------------------------------------------------------------------------------
+
 namespace Part2_FarmerApplication.Controllers
 {
     public class LoginController : Controller
     {
-        private readonly AppDbContext _context;
+        // Here we are using dependency injection to inject the login repository
+        private readonly ILoginRepository _loginRepo;
 
-        public LoginController(AppDbContext context)
+        //------------------------------------------------------------------------------------------------------
+        // Constructor for the LoginController
+        //------------------------------------------------------------------------------------------------------
+        public LoginController(ILoginRepository loginRepo)
         {
-            _context = context;
+            _loginRepo = loginRepo;
         }
+        //------------------------------------------------------------------------------------------------------
 
-        // Display login page
+        //------------------------------------------------------------------------------------------------------
+        // This action method returns the login page view
+        //------------------------------------------------------------------------------------------------------
         [HttpGet]
         public IActionResult Login()
         {
             return View();
         }
+        //------------------------------------------------------------------------------------------------------
 
+        //------------------------------------------------------------------------------------------------------
+        // This action method handles the login form submission
+        //-------------------------------------------------------------------------------------------------------
         [HttpPost]
         public async Task<IActionResult> Login(LoginViewModel model)
         {
-            // Validate that the model meets all teh required fields
             if (ModelState.IsValid)
             {
+                // Check if the email and password are not null or empty
                 if (string.IsNullOrEmpty(model.Email) || string.IsNullOrEmpty(model.Password))
                 {
                     ModelState.AddModelError(string.Empty, "Email and Password are required.");
                     return View(model);
                 }
 
-                // Check for Admin login
-                var admin = await _context.Admins.FirstOrDefaultAsync(a => a.Email.ToLower() == model.Email.ToLower() && a.Password == model.Password);
+                // Check if the email and password are valid
+                var admin = await _loginRepo.GetAdminByEmailAndPasswordAsync(model.Email, model.Password);
 
-                // Check if the admin exists in the database therefore making a valid login
+                // Check if the admin is null
                 if (admin != null)
                 {
-                    // Create claims for the logged-in admin
+                    // Create claims for the admin
                     var claims = new List<Claim>
-                    {
-                        new Claim(ClaimTypes.NameIdentifier, admin.AdminID.ToString()),
-                        new Claim(ClaimTypes.Name, admin.Name),
-                        new Claim(ClaimTypes.Email, admin.Email),
-                        new Claim(ClaimTypes.Role, admin.Role)
-                    };
+                {
+                    // Create claims for the admin
+                    new Claim(ClaimTypes.NameIdentifier, admin.AdminID.ToString()),
+                    new Claim(ClaimTypes.Name, admin.Name),
+                    new Claim(ClaimTypes.Email, admin.Email),
+                    new Claim(ClaimTypes.Role, admin.Role)
+                };
 
-                    // Create a claims identity and principal
+                    // Create claims identity for the admin
                     var claimsIdentity = new ClaimsIdentity(claims, CookieAuthenticationDefaults.AuthenticationScheme);
-                    var claimsPrincipal = new ClaimsPrincipal(claimsIdentity);
-
-                    // Sign in the user with the claims principal
-                    await HttpContext.SignInAsync(CookieAuthenticationDefaults.AuthenticationScheme, claimsPrincipal);
+                    await HttpContext.SignInAsync(CookieAuthenticationDefaults.AuthenticationScheme, new ClaimsPrincipal(claimsIdentity));
 
                     return RedirectToAction("AdminDashboard", "Admin");
                 }
 
-                // Check for Farmer login
-                var farmer = await _context.Farmers.FirstOrDefaultAsync(f => f.Email.ToLower() == model.Email.ToLower() && f.Password == model.Password);
+                // Check if the email and password are valid for a farmer
+                var farmer = await _loginRepo.GetFarmerByEmailAndPasswordAsync(model.Email, model.Password);
 
+                // Check if the farmer is null
                 if (farmer != null)
                 {
-                    // Create claims for the logged-in farmer
+                    // Create claims for the farmer
                     var claims = new List<Claim>
-                    {
+                {
+                    // Create claims for the farmer
                     new Claim(ClaimTypes.NameIdentifier, farmer.FarmerID.ToString()),
                     new Claim(ClaimTypes.Name, $"{farmer.FirstName} {farmer.LastName}"),
                     new Claim(ClaimTypes.Email, farmer.Email),
                     new Claim(ClaimTypes.Role, farmer.Role)
-                    };
-
+                };
+                    // Create claims identity for the farmer
                     var claimsIdentity = new ClaimsIdentity(claims, CookieAuthenticationDefaults.AuthenticationScheme);
-                    var claimsPrincipal = new ClaimsPrincipal(claimsIdentity);
-
-                    await HttpContext.SignInAsync(CookieAuthenticationDefaults.AuthenticationScheme, claimsPrincipal);
+                    await HttpContext.SignInAsync(CookieAuthenticationDefaults.AuthenticationScheme, new ClaimsPrincipal(claimsIdentity));
 
                     return RedirectToAction("FarmerDashboard", "Farmer");
                 }
 
-                // If no matching user found, return error
-                ModelState.AddModelError(nameof(model.Password), "Invalid login attempt. Please ensure you password and email is valid.");
+                // If the email and password are invalid, add a model error
+                ModelState.AddModelError(nameof(model.Password), "Invalid login attempt. Please ensure your password and email are valid.");
             }
 
             return View(model);
         }
+        //------------------------------------------------------------------------------------------------------
 
-        // Logout action to sign out the user
+        //------------------------------------------------------------------------------------------------------
+        // This action method handles the logout action
+        //-------------------------------------------------------------------------------------------------------
         [HttpPost]
         public async Task<IActionResult> Logout()
         {
             await HttpContext.SignOutAsync(CookieAuthenticationDefaults.AuthenticationScheme);
             return RedirectToAction("Login", "Login");
         }
+        //------------------------------------------------------------------------------------------------------
     }
 }
+//----------------------------------End--Of--File----------------------------------------------------------------

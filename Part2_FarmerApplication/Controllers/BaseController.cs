@@ -2,6 +2,12 @@
 using Microsoft.AspNetCore.Mvc.Filters;
 using System.Security.Claims;
 
+//----------------------------------------------------------------------------------------------------------------------
+// This is the base controller for the application.
+// This method checks if the user is authenticated and has the required claims.
+// If not, it redirects the user to the login page.
+//----------------------------------------------------------------------------------------------------------------------
+
 namespace Part2_FarmerApplication.Controllers
 {
     public class BaseController : Controller

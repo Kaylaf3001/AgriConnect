@@ -7,6 +7,13 @@ using Part2_FarmerApplication.Services.Filters;
 using Part2_FarmerApplication.ViewModels;
 using System.Security.Claims;
 
+//------------------------------------------------------------------------------------------------------
+// This is the controller for the Admin section of the application
+// It handles the admin dashboard, creating farmers, and filtering farmers/products
+// It uses the FarmerRepository and ProductRepository to access the data
+// It also uses the AdminDashboardViewModel to pass data to the view
+//------------------------------------------------------------------------------------------------------
+
 namespace Part2_FarmerApplication.Controllers
 {
     public class AdminController : BaseController
@@ -83,7 +90,6 @@ namespace Part2_FarmerApplication.Controllers
                 TempData["FarmerAdded"] = true;
                 return RedirectToAction("CreateFarmer");
             }
-
             return View(farmer);
         }
         //----------------------------------------------------------------------------------------------------------------------

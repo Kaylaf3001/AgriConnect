@@ -1,11 +1,14 @@
 ﻿using Microsoft.AspNetCore.Mvc;
-using Part2_FarmerApplication.Models;
 using Part2_FarmerApplication.ViewModels;
-using Part2_FarmerApplication.Services;
 using System.Security.Claims;
-using System.Threading.Tasks;
-using System.Linq;
 using Part2_FarmerApplication.Services.Filters;
+
+//----------------------------------------------------------------------------------------------------------------------
+// This is the controller for the Farmer section of the application
+// It handles the farmer dashboard and listing all products with farmer info
+// It uses the FarmerRepository and ProductRepository to access the data
+// It also uses the FarmerDashboardViewModel to pass data to the view
+//----------------------------------------------------------------------------------------------------------------------
 
 namespace Part2_FarmerApplication.Controllers
 {
@@ -32,19 +35,27 @@ namespace Part2_FarmerApplication.Controllers
         [RoleFilter("Farmer")]
         public async Task<IActionResult> FarmerDashboard()
         {
-
+            
             var farmerIdClaim = User.FindFirstValue(ClaimTypes.NameIdentifier);
+
+            // Check if the farmerIdClaim is null or empty
             if (farmerIdClaim == null)
                 return Unauthorized();
 
+            // Parse the farmerIdClaim to an integer
             int farmerId = int.Parse(farmerIdClaim);
+
             var farmer = await _farmerRepo.GetFarmerByIdAsync(farmerId);
+
+            // Check if the farmer is null
             if (farmer == null)
                 return NotFound();
 
+            // Get the recent products and total products for the farmer
             var recentProducts = await _farmerRepo.GetRecentProductsViewModelByFarmerAsync(farmerId, 5);
             var totalProducts = await _farmerRepo.GetProductsByFarmerAsync(farmerId);
 
+            // Check if the recent products or total products are null
             var model = new FarmerDashboardViewModel
             {
                 Farmer = farmer,
@@ -63,15 +74,19 @@ namespace Part2_FarmerApplication.Controllers
         [HttpGet]
         public async Task<IActionResult> FarmersProducts()
         {
+
+            // Get the user role and ID from the claims
             var userRole = User.FindFirstValue(ClaimTypes.Role);
             var userId = User.FindFirstValue(ClaimTypes.NameIdentifier);
 
+            // Check if the user role is null or empty
             int? farmerId = null;
             if (userRole == "Farmer" && int.TryParse(userId, out int id))
             {
                 farmerId = id;
             }
 
+            // Get the products for the farmer or all products if the user is an admin
             var products = await _farmerRepo.GetFarmersProductsViewModelsAsync(userRole, farmerId);
             return View(products);
         }
